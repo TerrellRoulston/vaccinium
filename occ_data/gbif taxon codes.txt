@@ -1,0 +1,26 @@
+# Vaccinium angustifolium 2882868
+# Vaccinium corymbosum	2882849, 4174438 (Vaccinium corymbodendron), 2882837 (Vaccinium caesariense)
+# Vaccinium myrtilloides 2882880
+# Vaccinium pallidum	2882895, 8032646 (Vaccinium vacillans)
+# Vaccinium hirsutum	2882824
+# Vaccinium darrowii	2882908
+# Vaccinium virgatum	2882884
+# Vaccinium tenellum	2882847
+# Vaccinium myrsinites	2882937
+# Vaccinium boreale	8147903
+# Vaccinium macrocarpon	2882841
+# Vaccinium oxycoccos	2882940, 8344892 (Vaccinium microcarpum)
+# Vaccinium cespitosum	2882861
+# Vaccinium membranaceum Douglas ex Torr.,  Vaccinium membranaceum Douglas ex Hook. 2882875, 9060377
+# Vaccinium deliciosum	2882961
+# Vaccinium myrtillus	2882833
+# Vaccinium parvifolium	2882910
+# Vaccinium ovalifolium	2882894
+# Vaccinium scoparium	8383191
+# Vaccinium uliginosum	8073364, 4172817 (Vaccinium gaultheriodes)
+# Vaccinium stamineum	2882913
+# Vaccinium ovatum	2882838
+# Vaccinium arboreum	2882828
+# Vaccinium crassifolium 2882960
+# Vaccinium erythrocarpum 2882844
+# Vaccinium vitis-idaea	2882835
