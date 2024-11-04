@@ -1,8 +1,9 @@
+# Top ---------------------------------------------------------------------
+# Downloading GBIF data for North American Vaccinum species
 library(tidyverse) # data management, grammar
 library(rgbif) # access GBIF data
 
 getwd()
-#setwd('../vaccinium/')
 
 # Download occurrence data from GBIF
 
@@ -61,7 +62,7 @@ email='terrellroulston@gmail.com'
 # scoparium - sco
 # uliginosum - uli
 # stamineum - sta
-# ovatum - ova
+# ovatum - ovt
 # arboreum - arb
 # crassifolium - cra
 # erythrocarpum - ery
@@ -497,7 +498,7 @@ country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
 
 # Download data
 down_code = occ_download(
-  pred("taxonKey", taxonKey),
+  pred_in("taxonKey", taxonKey),
   pred_in("basisOfRecord", basisOfRecord),
   pred("hasCoordinate", hasCoordinates),
   pred_in("country", country_codes),
@@ -553,7 +554,7 @@ occ_download_wait(down_code)
 
 getwd() # check your working directory (wd)
 setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ova <- occ_download_get(down_code[1], overwrite = TRUE)
+download_ovt <- occ_download_get(down_code[1], overwrite = TRUE)
 
 # V. arboreum download ----------------------------------------------------
 taxonKey <- 2882828
