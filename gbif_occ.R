@@ -110,9 +110,7 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_cor <- occ_download_get(down_code[1], overwrite = TRUE)
+download_cor <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. myrtilloides download ------------------------------------------------
 taxonKey <- 2882880
@@ -132,9 +130,7 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_myr <- occ_download_get(down_code[1], overwrite = TRUE)
+download_myr <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. pallidum download ----------------------------------------------------
 taxonKey <- c(2882895, 8032646) # note: includes Vaccinium vacillans
