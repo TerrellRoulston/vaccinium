@@ -9,7 +9,6 @@ library(predicts) # SDM package
 library(geodata) # basemaps
 library(rJava) # MaxEnt models are dependant on JDK
 library(ENMeval) # Another modeling package, useful for data partitioning (Checkerboarding)
-library(raster) # RasterStack dependancy (a now deprecated function)
 library(ecospat) # Useful spatial ecology tools
 library(parallel) # speed up computation by running in parallel
 library(doParallel) # added functionality to parallel
@@ -167,6 +166,8 @@ angPankaj_maxent <- ENMevaluate(occ_angPankaj_coords, # occurrence records
 # Save the MaxEnt model so you do not have to waste time re-running the model
 saveRDS(ang_maxent, file = './sdm_output/ang_maxent.Rdata') # save
 saveRDS(angPankaj_maxent, file = './sdm_output/angPankaj_maxent.Rdata') # save
+
+ang_maxent <- readRDS(file = './sdm_output/ang_maxent.Rdata')
 
 # V. angustifolium Model Selection ----------------------------------------
 # Model selection and variable importance

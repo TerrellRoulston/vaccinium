@@ -84,7 +84,7 @@ occ_ang_clean <- occ_ang %>%
   filter(!(decimalLongitude < -110)) # remove some records from west coast
 
 # Plot basemap  
-plot(canUS_map, xlim = c(-180, -50))
+plot(canUSmx_map, xlim = c(-180, -50))
 
 # Plot occurrences
 points(occ_ang_clean$decimalLongitude, occ_ang_clean$decimalLatitude, pch = 16,
@@ -506,6 +506,30 @@ points(occ_ovt_clean$decimalLongitude, occ_ovt_clean$decimalLatitude, pch = 16,
 saveRDS(occ_ovt_clean, file = "./occ_data/clean/occ_ovt_clean.Rdata")
 
 
+# V. pallidum cleaning ----------------------------------------------------
+View(occ_pal)
+
+occ_pal_clean <- occ_pal %>% 
+  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, `ï..gbifID`) %>% #grab necessary columns 
+  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+  filter(decimalLongitude != 0) %>% 
+  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+  cc_cen(buffer = 2000) %>%
+  cc_inst(buffer = 200) %>%
+  cc_sea()%>% 
+  distinct(decimalLatitude, decimalLongitude, `ï..gbifID`, .keep_all = T) 
+
+# Plot basemap  
+plot(canUSmx_map, xlim = c(-180, -50))
+
+# Plot occurrences
+points(occ_pal_clean$decimalLongitude, occ_pal_clean$decimalLatitude, pch = 16,
+       col = alpha("red", 0.2))
+
+saveRDS(occ_pal_clean, file = "./occ_data/clean/occ_pal_clean.Rdata")
+
+
 # V. parvifolium cleaning -------------------------------------------------
 View(occ_par)
 
@@ -680,3 +704,35 @@ points(occ_vir_clean$decimalLongitude, occ_vir_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
 saveRDS(occ_vir_clean, file = "./occ_data/clean/occ_vir_clean.Rdata")
+
+
+
+# Plot all species together -----------------------------------------------
+# Append "_clean" to each name
+file_names_clean <- list(
+  occ_ang_clean, occ_arb_clean, occ_bor_clean, occ_ces_clean, occ_cor_clean, 
+  occ_cra_clean, occ_dar_clean, occ_del_clean, occ_ery_clean, occ_hir_clean, 
+  occ_mac_clean, occ_mem_clean, occ_mtu_clean, occ_myr_clean, occ_mys_clean, 
+  occ_ova_clean, occ_ovt_clean, occ_pal_clean, occ_par_clean, occ_sco_clean, 
+  occ_sta_clean, occ_ten_clean, occ_uli_clean, occ_vid_clean, occ_vir_clean
+)
+
+file_names_clean <- lapply(file_names_clean, function(df) {
+  colnames(df) <- c("species", "countryCode", "decimalLatitude", 
+                    "decimalLongitude", "coordinateUncertaintyInMeters", 
+                    "year", "basisOfRecord", "gbifID")
+  return(df)
+})
+
+# Combine all into a single data frame
+result <- do.call(rbind, file_names_clean)
+
+# View the combined result
+result
+
+# Plot basemap  
+plot(canUSmx_map, xlim = c(-180, -50))
+
+# Plot occurrences
+points(result$decimalLongitude, result$decimalLatitude, pch = 16,
+       col = alpha("red", 0.1))
