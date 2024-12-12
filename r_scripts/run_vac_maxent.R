@@ -31,7 +31,6 @@ if (length(args) < 1) stop("Error: No species specified.")
 species <- args[1]
 cat("Processing species:", species, "\n")
 
-
 # Species List ------------------------------------------------------------
 cat("Load data for each species\n")
 species_list <- list(
@@ -203,6 +202,7 @@ tryCatch({ # tryCatch to capture errors and log them without terminating task
   cat("Error in ENMevaluate for species", species, ":", e$message, "\n")
 })
 
+cat("Finnished ")
 # Save Maxent Outputs -----------------------------------------------------
 # Save outputs
 output_dir <- file.path("/project/6074193/mig_lab/vac_sdm/output", species)
@@ -212,6 +212,15 @@ if (exists("maxent_model")) {
   write.csv(subset(maxent_model@results, delta.AICc == 0), 
             file = file.path(output_dir, paste0(species, "_evaluation.csv")))
 }
+
+# Select the best performing Maxent model for the predictions below
+best_model <- subset(maxent_model@results, delta.AICc == 0) # selects the best performing model based on delta AICc - returns data frame object
+mod.best_maxent <- eval.models(maxent_model)[[best_model$tune.args]]
+
+
+# Load climate data for predictions ---------------------------------------
+
+
 
 cat("Processing completed for species:", species, "\n")
 
