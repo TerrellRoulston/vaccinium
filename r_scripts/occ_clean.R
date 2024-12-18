@@ -14,8 +14,9 @@ file_names <- c(
   "occ_ang", "occ_arb", "occ_bor", "occ_ces", "occ_cor", 
   "occ_cra", "occ_dar", "occ_del", "occ_ery", "occ_hir", 
   "occ_mac", "occ_mem", "occ_mtu", "occ_myr", "occ_mys", 
-  "occ_ova", "occ_ovt", "occ_pal", "occ_par", "occ_sco", 
-  "occ_sta", "occ_ten", "occ_uli", "occ_vid", "occ_vir"
+  "occ_ova", "occ_ovt", "occ_oxy", "occ_pal", "occ_par", 
+  "occ_sco", "occ_sta", "occ_ten", "occ_uli", "occ_vid", 
+  "occ_vir"
 )
 
 # Directory path where the CSV files are stored
@@ -44,6 +45,7 @@ for (name in file_names) {
 # occ_mys
 # occ_ova
 # occ_ovt
+# occ_oxy
 # occ_pal
 # occ_par
 # occ_sco
@@ -83,7 +85,6 @@ occ_ang_clean <- occ_ang %>%
   distinct(decimalLatitude, decimalLongitude, `ï..gbifID`, .keep_all = T) %>% 
   filter(!(decimalLongitude < -110)) # remove some records from west coast
 
-# Plot basemap  
 plot(canUSmx_map, xlim = c(-180, -50))
 
 # Plot occurrences
@@ -504,6 +505,31 @@ points(occ_ovt_clean$decimalLongitude, occ_ovt_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
 saveRDS(occ_ovt_clean, file = "./occ_data/clean/occ_ovt_clean.Rdata")
+
+
+# V. oxycoccos cleaning ---------------------------------------------------
+View(occ_oxy)
+
+occ_oxy_clean <- occ_oxy %>% 
+  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, `ï..gbifID`) %>% #grab necessary columns 
+  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+  filter(decimalLongitude != 0) %>% 
+  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+  cc_cen(buffer = 2000) %>%
+  cc_inst(buffer = 200) %>%
+  cc_sea()%>% 
+  distinct(decimalLatitude, decimalLongitude, `ï..gbifID`, .keep_all = T) 
+
+# Plot basemap  
+plot(canUSmx_map, xlim = c(-180, -50))
+
+# Plot occurrences
+points(occ_oxy_clean$decimalLongitude, occ_oxy_clean$decimalLatitude, pch = 16,
+       col = alpha("red", 0.2))
+
+saveRDS(occ_oxy_clean, file = "./occ_data/clean/occ_oxy_clean.Rdata")
+
 
 
 # V. pallidum cleaning ----------------------------------------------------
