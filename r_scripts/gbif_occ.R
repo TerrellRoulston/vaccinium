@@ -3,14 +3,127 @@
 library(tidyverse) # data management, grammar
 library(rgbif) # access GBIF data
 
-getwd()
 
-# Download occurrence data from GBIF
+## The following is needed only the first time the data is downloaded from GBIF. 
+## Make sure to save the created object
 
-# GBIF user info
-user='terrell_roulston'
-pwd='Malus123!'
-email='terrellroulston@gmail.com'
+
+# FUNCTIONS ------------------------------------------------------
+
+#In general, this series of functions will build up to do the following
+#Take a dataframe of taxons and associated keys
+#Download their data from gbiff, put that data in named sub directories and create a 4xn dataframe with it all
+
+#The first 4 fctns act as building blocks for comprehensive download and file mgmt
+
+#The 5th calls these building blocks and creates a list with all important data for one species
+
+#The 6th then maps this to every species in a dataframe
+
+
+
+#Create a new sub directory
+#Return relative path to that subDir
+create_and_return_path <- function(newSubDir) {
+  
+  dir.create(file.path('./occ_data', newSubDir)) #file.path() allows you to specify relative paths no matter OS
+  
+  paste0('./occ_data/', newSubDir) %>% 
+    return()
+}
+
+
+#Send a request to download data of specified taxon
+#Return a unique code associated with that download request
+request_gbif_occ_download <- function(taxonKey, basisOfRecord, countryCodes) {
+  
+  occ_download(
+    pred("taxonKey", taxonKey),
+    pred_in("basisOfRecord", basisOfRecord),
+    pred("hasCoordinate", TRUE),
+    pred_in("country", countryCodes),
+    format = "SIMPLE_CSV", #I noticed you downloaded as DWCA in this analysis, adjust as needed
+    user = gbif_credentials$user, 
+    pwd = gbif_credentials$pwd, 
+    email = gbif_credentials$email
+  ) 
+  #returns: downCode
+}
+
+
+#Take unique downCode and a directory, then, after waiting for prep, download then extract all files to that dir
+wait_execute_extract_gbif_occ_download <- function(downCode, newDir) {
+  
+  occ_download_wait(downCode[1]) 
+  
+  occ_download_get(downCode[1], path = newDir, overwrite = TRUE) %>% 
+    occ_download_import(downCode[1], path = newDir)
+  #returns: tibble of occ data
+}
+
+
+#Call all above functions
+#Create a relative path, request a download, then execute that download
+comprehensive_gbif_occ_download <- function(taxonKey, epithet, basisOfRecord, countryCodes) {
+  
+  newDirPath <- create_and_return_path(epithet)
+  
+  downCode <- taxonKey %>% 
+    request_gbif_occ_download(basisOfRecord, countryCodes)
+  
+  occDf <-   
+    wait_execute_extract_gbif_occ_download(downCode, newDirPath)
+  
+  list(
+    occDf = occDf,
+    downCode = downCode
+  )
+}
+
+
+#Perform a comprehensive download, create a list of important related info
+download_and_collect_receipts <- function(taxonKey, epithet, basisOfRecord, countryCodes) {
+  download <- comprehensive_gbif_occ_download(taxonKey, epithet, basisOfRecord, countryCodes)
+  
+  list(
+    epithet = epithet,
+    taxonKey = taxonKey,
+    gbiffOcc = download$occDf,
+    downCode = download$downCode
+  )
+}
+
+#Take a bunch of taxons, download them all
+#Function takes a dataframe of n species and keys, then, for each one, performs a comprehensive download
+#taxonKeys should be a n by 2 dataframe
+# taxonKeys[1] = str: epithet
+# taxonKeys[2] = int: gbiff taxon key
+map_gbif_download_to_taxon_key_df <- function(taxonKeys, basisOfRecord, countryCodes) {
+  
+  taxonKeys %>% 
+    pmap(\(epithet, taxonKey, downCodes) { #for every epithet and key in the dataframe
+      download_and_collect_receipts(taxonKey, epithet, basisOfRecord, countryCodes)  #download record, create list, associate with downCode 
+    })
+  #returns: list of receipt lists
+}
+
+#clean up data produced by above map function
+list_of_lists_to_df <- function(df) {
+  df %>% 
+    enframe(name = "row_id") %>% 
+    unnest_wider(value) %>%
+    select(-row_id)
+}
+
+
+#still need 2 more functions:
+
+#export_all_taxons_to_global_env()
+  #take created dataframe of all species, create per sepcies object names, put occ dfs in global env
+
+#import_taxons()
+  #take previously downloaded data, bring it into df
+
 
 # Taxon IDs ---------------------------------------------------------------
 # Vaccinium angustifolium	2882868
@@ -68,578 +181,36 @@ email='terrellroulston@gmail.com'
 # erythrocarpum - ery
 # vitis-idaea - vid
 
-# V. angustifolium download -----------------------------------------------
-taxonKey <- 2882868
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-# Use 'pred()' if there is a single argument, or 'pred_in()' if there are multiple
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-
-getwd() # check your working directory (wd)
-setwd("../occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ang <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. corymbosum download --------------------------------------------------
-taxonKey <- c(2882849, 4174438, 2882837) # note: includes Vaccinium corymbodendron and Vaccinium caesariense
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates 
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred_in("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-download_cor <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
-
-# V. myrtilloides download ------------------------------------------------
-taxonKey <- 2882880
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-download_myr <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
-
-# V. pallidum download ----------------------------------------------------
-taxonKey <- c(2882895, 8032646) # note: includes Vaccinium vacillans
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred_in("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_pal <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. hirsutum download ----------------------------------------------------
-taxonKey <- 2882824
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_hir <- occ_download_get(down_code[1], overwrite = TRUE)
-
-
-# V. darrowii download ----------------------------------------------------
-taxonKey <- 2882908
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_dar <- occ_download_get(down_code[1], overwrite = TRUE)
-
-
-# V. virgatum download ----------------------------------------------------
-taxonKey <- 2882884
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_vir <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. tenellum download ----------------------------------------------------
-taxonKey <- 2882847
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ten <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. myrsinites download --------------------------------------------------
-taxonKey <- 2882937
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mys <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. boreale download -----------------------------------------------------
-taxonKey <- 8147903
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_bor <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. macrocarpon download -------------------------------------------------
-taxonKey <- 2882841
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mac <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. oxycoccos download ---------------------------------------------------
-taxonKey <- c(2882940, 8344892) # Note: includes Vaccinium microcarpum
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred_in("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_oxy <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. cespitosum download --------------------------------------------------
-taxonKey <- 2882861
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ces <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. membranaceum download ------------------------------------------------
-taxonKey <- c(2882875, 9060377) # Note: includes Vaccinium microcarpum
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred_in("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mem <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. deliciosum download --------------------------------------------------
-taxonKey <- 2882961
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_del <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. myrtillus download ---------------------------------------------------
-taxonKey <- 2882833
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mtu <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. parvifolium download -------------------------------------------------
-taxonKey <- 2882910
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_par <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. ovalifolium download -------------------------------------------------
-taxonKey <- 2882894
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ova <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. scoparium download ---------------------------------------------------
-taxonKey <- 8383191
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_sco <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. uliginosum download --------------------------------------------------
-taxonKey <- c(8073364, 4172817) #Note: includes Vaccinium gaultheriodes
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred_in("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_uli <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. stamineum download ---------------------------------------------------
-taxonKey <- 2882913
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_sta <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. ovatum download ------------------------------------------------------
-taxonKey <- 2882838
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ovt <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. arboreum download ----------------------------------------------------
-taxonKey <- 2882828
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_arb <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. crassifolium download ------------------------------------------------
-taxonKey <- 2882960
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_cra <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. erythrocarpum download -----------------------------------------------
-taxonKey <- 2882844
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ery <- occ_download_get(down_code[1], overwrite = TRUE)
-
-# V. vitis-idaea download -------------------------------------------------
-taxonKey <- 2882835
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_vid <- occ_download_get(down_code[1], overwrite = TRUE)
-
+# SCRIPT ------------------------------------------------------------------
+#Ensure relative working directory is ./vaccinium
+
+source("scripts/gbif_login.R")
+##The above script is in .gitignore for ease of development
+##It contains only the below code
+##Instantiate the gbif_credentials list as you see fit
+
+# gbif_credentials <- list(
+#   user ='REDACTED',
+#   pwd ='REDACTED',
+#   email ='REDACTED'
+# )
+
+
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN')
+countryCodes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
+
+taxonKeys <- 
+  tribble(
+    ~epithet, ~taxonKey,
+    'ang', 2882868,
+    '...'
+  )
+
+OccDataList <- taxonKeys %>%
+  map_gbif_download_to_taxon_key_df(basisOfRecord, countryCodes)
+
+OccDataDF <- OccDataList %>% 
+  list_of_lists_to_df()
 
 
 
