@@ -8,9 +8,9 @@ getwd()
 # Download occurrence data from GBIF
 
 # GBIF user info
-user='terrell_roulston'
-pwd='Malus123!'
-email='terrellroulston@gmail.com'
+user='REDACTED'
+pwd='REDACTED'
+email='REDACTED'
 
 # Taxon IDs ---------------------------------------------------------------
 # Vaccinium angustifolium	2882868
@@ -39,6 +39,17 @@ email='terrellroulston@gmail.com'
 # Vaccinium crassifolium	2882960
 # Vaccinium erythrocarpum	2882844
 # Vaccinium vitis-idaea	2882835
+# SPECIES ADDED LATER (from south of US)
+# Vaccinium leucanthum 4171440
+# Vaccinium confertum 7328893
+# Vaccinium stenophyllum 4167742
+# Vaccinium shastense 7936270 (California endemic)
+# Vaccinium geminiflorum 2882930
+# Vaccinium cordifolium 4174484
+# Vaccinium consanguineum 7328886
+# Vaccinium selerianum 4168278
+# Vaccinium kunthianum 4171763
+
 
 # Species abbreviations ---------------------------------------------------
 # angustifolium - ang
@@ -67,6 +78,16 @@ email='terrellroulston@gmail.com'
 # crassifolium - cra
 # erythrocarpum - ery
 # vitis-idaea - vid
+# ADDED
+# leucanthum - leu
+# confertum - con
+# stenophyllum - ste
+# shastense - sha
+# geminiflorum - gem
+# cordifolium - crd
+# consanguineum - cos
+# selerianum - sel
+# kunthianum - kun
 
 # V. angustifolium download -----------------------------------------------
 taxonKey <- 2882868
@@ -88,9 +109,9 @@ down_code = occ_download(
 occ_download_wait(down_code)
 
 
-getwd() # check your working directory (wd)
+
 setwd("../occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ang <- occ_download_get(down_code[1], overwrite = TRUE)
+download_ang <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/', path = './occ_data/raw/')
 
 # V. corymbosum download --------------------------------------------------
 taxonKey <- c(2882849, 4174438, 2882837) # note: includes Vaccinium corymbodendron and Vaccinium caesariense
@@ -110,7 +131,7 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-download_cor <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+download_cor <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/', path = './occ_data/raw/')
 
 # V. myrtilloides download ------------------------------------------------
 taxonKey <- 2882880
@@ -130,7 +151,7 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-download_myr <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+download_myr <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/', path = './occ_data/raw/')
 
 # V. pallidum download ----------------------------------------------------
 taxonKey <- c(2882895, 8032646) # note: includes Vaccinium vacillans
@@ -150,9 +171,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_pal <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_pal <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. hirsutum download ----------------------------------------------------
 taxonKey <- 2882824
@@ -172,9 +193,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_hir <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_hir <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 
 # V. darrowii download ----------------------------------------------------
@@ -195,9 +216,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_dar <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_dar <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 
 # V. virgatum download ----------------------------------------------------
@@ -218,9 +239,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_vir <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_vir <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. tenellum download ----------------------------------------------------
 taxonKey <- 2882847
@@ -240,9 +261,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ten <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_ten <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. myrsinites download --------------------------------------------------
 taxonKey <- 2882937
@@ -262,9 +283,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mys <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_mys <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. boreale download -----------------------------------------------------
 taxonKey <- 8147903
@@ -284,9 +305,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_bor <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_bor <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. macrocarpon download -------------------------------------------------
 taxonKey <- 2882841
@@ -306,9 +327,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mac <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_mac <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. oxycoccos download ---------------------------------------------------
 taxonKey <- c(2882940, 8344892) # Note: includes Vaccinium microcarpum
@@ -328,9 +349,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_oxy <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_oxy <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. cespitosum download --------------------------------------------------
 taxonKey <- 2882861
@@ -350,9 +371,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ces <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_ces <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. membranaceum download ------------------------------------------------
 taxonKey <- c(2882875, 9060377) # Note: includes Vaccinium microcarpum
@@ -372,9 +393,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mem <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_mem <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. deliciosum download --------------------------------------------------
 taxonKey <- 2882961
@@ -394,9 +415,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_del <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_del <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. myrtillus download ---------------------------------------------------
 taxonKey <- 2882833
@@ -416,9 +437,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_mtu <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_mtu <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. parvifolium download -------------------------------------------------
 taxonKey <- 2882910
@@ -438,9 +459,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_par <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_par <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. ovalifolium download -------------------------------------------------
 taxonKey <- 2882894
@@ -460,9 +481,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ova <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_ova <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. scoparium download ---------------------------------------------------
 taxonKey <- 8383191
@@ -482,9 +503,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_sco <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_sco <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. uliginosum download --------------------------------------------------
 taxonKey <- c(8073364, 4172817) #Note: includes Vaccinium gaultheriodes
@@ -504,9 +525,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_uli <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_uli <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. stamineum download ---------------------------------------------------
 taxonKey <- 2882913
@@ -526,9 +547,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_sta <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_sta <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. ovatum download ------------------------------------------------------
 taxonKey <- 2882838
@@ -548,9 +569,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ovt <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_ovt <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. arboreum download ----------------------------------------------------
 taxonKey <- 2882828
@@ -570,9 +591,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_arb <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_arb <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. crassifolium download ------------------------------------------------
 taxonKey <- 2882960
@@ -592,9 +613,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_cra <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_cra <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. erythrocarpum download -----------------------------------------------
 taxonKey <- 2882844
@@ -614,9 +635,9 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_ery <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_ery <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 
 # V. vitis-idaea download -------------------------------------------------
 taxonKey <- 2882835
@@ -636,9 +657,199 @@ down_code = occ_download(
 # Wait for download to finish
 occ_download_wait(down_code)
 
-getwd() # check your working directory (wd)
-setwd("./occ_data/raw/") # set wd to a location where you want to save the csv file.
-download_vid <- occ_download_get(down_code[1], overwrite = TRUE)
+
+
+download_vid <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+
+# V. leucanthum download --------------------------------------------------
+taxonKey <- 4171440
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_leu <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_leu <- occ_download_import(download_leu) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_leu, file = './occ_data/raw/occ_leu.csv') # save the download file under a clean new name
+file.remove(download_leu) # delete the old ugly-named GBIF file
+# V. confertum download --------------------------------------------------
+taxonKey <- 7328893
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_con <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_con <- occ_download_import(download_con) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_con, file = './occ_data/raw/occ_con.csv') # save the download file under a clean new name
+file.remove(download_con) # delete the old ugly-named GBIF file
+# V. stenophyllum download ------------------------------------------------
+taxonKey <- 4167742
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_ste <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_ste <- occ_download_import(download_ste) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_ste, file = './occ_data/raw/occ_ste.csv') # save the download file under a clean new name
+file.remove(download_ste) # delete the old ugly-named GBIF file
+# V. shastense download ---------------------------------------------------
+taxonKey <- 7936270
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_sha <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_sha <- occ_download_import(download_sha) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_sha, file = './occ_data/raw/occ_sha.csv') # save the download file under a clean new name
+file.remove(download_sha) # delete the old ugly-named GBIF file
+# V. geminiflorum download ------------------------------------------------
+taxonKey <- 2882930
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_gem <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_gem <- occ_download_import(download_gem) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_gem, file = './occ_data/raw/occ_gem.csv') # save the download file under a clean new name
+file.remove(download_gem) # delete the old ugly-named GBIF file
+# V. cordifolium download -------------------------------------------------
+taxonKey <- 4174484
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_crd <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_crd <- occ_download_import(download_crd) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_crd, file = './occ_data/raw/occ_crd.csv') # save the download file under a clean new name
+file.remove(download_crd) # delete the old ugly-named GBIF file
+# V. consanguineum download -----------------------------------------------
+taxonKey <- 7328886
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_cos <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_cos <- occ_download_import(download_cos) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_cos, file = './occ_data/raw/occ_cos.csv') # save the download file under a clean new name
+file.remove(download_cos) # delete the old ugly-named GBIF file
+# V. selerianum download --------------------------------------------------
+taxonKey <- 4168278
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_sel <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_sel <- occ_download_import(download_sel) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_sel, file = './occ_data/raw/occ_sel.csv') # save the download file under a clean new name
+file.remove(download_sel) # delete the old ugly-named GBIF file
+# V. kunthianum download --------------------------------------------------
+taxonKey <- 4171763
+basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+hasCoordinates <- TRUE # limit to records with coordinates
+country_codes <- c("CA","US","MX","GT","HN","SV","NI","CR","PA") # limit to Canada, USA and Mexico and other Mesoamerica countries
+
+# Download data
+down_code = occ_download(
+  pred("taxonKey", taxonKey),
+  pred_in("basisOfRecord", basisOfRecord),
+  pred("hasCoordinate", hasCoordinates),
+  pred_in("country", country_codes),
+  format = "DWCA",
+  user=user, pwd=pwd, email=email)
+
+# Wait for download to finish
+occ_download_wait(down_code)
+download_kun <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+df_kun <- occ_download_import(download_kun) #import the download, which is actually a tsv and now csv as indicated...
+write.csv(df_kun, file = './occ_data/raw/occ_kun.csv') # save the download file under a clean new name
+file.remove(download_kun) # delete the old ugly-named GBIF file
 
 
 
