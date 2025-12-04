@@ -1,69 +1,76 @@
-# Quick notes for stacking SDMs
+# Top ---------------------------------------------------------------------
+# Stacking SDMs
 # Compute individual SDM for each species
-
 # Reference:
 # Calabrese, J. M., Certain, G., Kraan, C., & Dormann, C. F. (2014). 
 #Stacking species distribution models and adjusting bias by linking them to macroecological models. 
 #Global Ecology and Biogeography, 23(1), 99–112. https://doi.org/10.1111/geb.12102
 
-# Example parameters
-set.seed(123)  # For reproducibility
-J <- 100       # Number of sites (10x10 grid assumed)
-K <- 20        # Number of species
+# Output of Maxent are on cloglog scale and do not need to be transformed, but should stack before thresholding and not after!
 
-# Simulate occurrence probabilities for each species at each site
-P <- matrix(runif(J * K, min = 0, max = 1), nrow = J, ncol = K)
-colnames(P) <- paste0("Species_", 1:K)
-rownames(P) <- paste0("Site_", 1:J)
 
-# Expected species richness (sum of probabilities for each site)
-expected_richness <- rowSums(P)
+# libraries ---------------------------------------------------------------
+library(tidyverse)
+library(terra)
 
-# Variance of species richness at each site
-richness_variance <- rowSums(P * (1 - P))
 
-# Combine results into a data frame
-richness_results <- data.frame(
-  Site = rownames(P),
-  Expected_Richness = expected_richness,
-  Variance = richness_variance
+# Import suitability rasters ----------------------------------------------
+sp_codes <- c(
+  "ang", "cor", "myr", "pal", "hir", "dar", "vir", "ten", "mys", "bor",
+  "mac", "oxy", "ces", "mem", "del", "mtu", "par", "ova", "sco", "uli",
+  "sta", "arb", "cra", "ery", "vid"
 )
 
-# Reshape the expected richness and variance into 10x10 matrices
-richness_matrix <- matrix(expected_richness, nrow = 10, ncol = 10, byrow = TRUE)
-variance_matrix <- matrix(richness_variance, nrow = 10, ncol = 10, byrow = TRUE)
+# make a file path to read each species as its code
+pred_files <- file.path(
+  "sdm_output", "sdm_results",
+  sp_codes,
+  paste0(sp_codes, "_pred_hist.RDS")
+)
+names(pred_files) <- sp_codes  # so we can keep track
 
-library(raster)
 
-# Create empty raster templates for expected richness and variance
-richness_raster <- raster(nrows = 10, ncols = 10, xmn = 0, xmx = 10, ymn = 0, ymx = 10)
-variance_raster <- raster(nrows = 10, ncols = 10, xmn = 0, xmx = 10, ymn = 0, ymx = 10)
+# Helper function for reading in rasters as RDS
+read_pred_raster <- function(path) {
+  obj <- readRDS(path)
+  
+  # If you saved the prediction directly as a SpatRaster
+  if (inherits(obj, "SpatRaster")) {
+    return(obj)
+  }
+  
+  stop("Don't know how to extract a raster from: ", path)
+}
 
-# Assign values from matrices to raster objects
-values(richness_raster) <- as.vector(richness_matrix)
-values(variance_raster) <- as.vector(variance_matrix)
+# Load all Rasters using function
+spp_rasters <- lapply(pred_files, read_pred_raster)
 
-# Set CRS (optional, can set to any relevant CRS, e.g., WGS84)
-crs(richness_raster) <- "+proj=longlat +datum=WGS84"
-crs(variance_raster) <- "+proj=longlat +datum=WGS84"
 
-# Plot the expected species richness raster
-plot(richness_raster, main = "Expected Species Richness")
+# Stack rasters! ----------------------------------------------------------
 
-# Plot the variance of species richness raster
-plot(variance_raster, main = "Variance of Species Richness")
+# Create a SpatRaster stack
+spp_stack <- rast(spp_rasters)
+names(spp_stack) <- names(spp_rasters)  # ang, cor, ...
 
-# NOTE THESE WOULD BE REPLACED BY PROBABILIY VALUES FROM SDMs
+# Expected richness (Calabrese Eq. 2: sum of probabilities)
+richness_mean <- app(spp_stack, fun = sum, na.rm = TRUE)
 
-# Something like this?
-# Assuming you have a list of rasters, each representing a species' occurrence probability
-species_rasters <- list(species1_raster, species2_raster, ..., speciesK_raster)
+# Optional: variance of richness (Calabrese Eq. 3: Σ p(1–p))
+richness_var <- app(
+  spp_stack,
+  fun = function(x) sum(x * (1 - x), na.rm = TRUE)
+)
 
-# Stack all species rasters into a single raster stack
-raster_stack <- stack(species_rasters)
+rich_zero_na <- ifel(richness_mean < 1e-6, NA, richness_mean)
 
-# Sum across all layers to get expected species richness per cell
-expected_richness <- calc(raster_stack, sum)
+pal <- hcl.colors(10, "Viridis")
 
-# Plot the expected species richness map
-plot(expected_richness, main = "Expected Species Richness Across North America")
+png(file = "./visualizations/vaccinium_richness_hist.png", width = 1600, height = 2000, res = 300)
+
+plot(rich_zero_na,
+     col = pal,
+     main = "Expected Vaccinium richness (historical)",
+     colNA = "white")   # NA cells plotted as white
+dev.off()
+
+
