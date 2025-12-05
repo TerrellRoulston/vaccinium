@@ -3,21 +3,32 @@
 # Terrell Roulston
 # Started Dec 12 2024
 library(tidyverse) # Grammar and data management
+library(tidyterra)
 library(terra) # Spatial Data package
 library(predicts) # SDM package
 library(geodata) # basemaps
 
 # Great Lakes shapefiles for making pretty maps and cropping
 great_lakes <- vect('C:/Users/terre/Documents/Acadia/Malus Project/maps/great lakes/combined great lakes/')
-NA_ext <- ext(-180, -30, 18, 85) # Set spatial extent of analyis to NA in Western Hemisphere
+NA_ext <- NA_ext <- ext(-180, -30, 14, 85) # Set spatial extent of analyis to NA in Western Hemisphere
+
+
+sel <- c('wc2.1_2.5m_bio_1','wc2.1_2.5m_bio_4',
+         'wc2.1_2.5m_bio_10','wc2.1_2.5m_bio_11',
+         'wc2.1_2.5m_bio_15','wc2.1_2.5m_bio_16')
+
 
 # Historical climate 1970-2000
 wclim <- geodata::worldclim_global(var = 'bio',
                                    res = 2.5, 
                                    version = '2.1', 
                                    path = "./wclim_data/") %>% 
-  crop(NA_ext) %>% #crop raster to NA 
-  mask(great_lakes, inverse = T) # cut out the great lakes
+  crop(NA_ext) %>% 
+  tidyterra::select(sel) %>% 
+  mask(great_lakes, inverse = TRUE)
+
+# put the names back
+names(wclim) <- sel
 
 # SSP (Shared social-economic pathway) 2.45 
 # middle of the road projection, high climate adaptation, low climate mitigation
@@ -73,7 +84,7 @@ ssp585_2070 <- cmip6_world(model = "CanESM5",
                            time = "2061-2080",
                            var = "bioc",
                            res = 2.5,
-                           path = "../wclim_data/")%>% 
+                           path = "./wclim_data/")%>% 
   crop(NA_ext) %>% #crop raster to NA 
   mask(great_lakes, inverse = T) # cut out the great lakes
 
