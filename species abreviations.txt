@@ -1,26 +1,34 @@
-# angustifolium - ang
-# corymbosum - cor
-# myrtilloides - myr
-# pallidum - pal
-# hirsutum - hir
-# darrowii - dar
-# virgatum - vir
-# tenellum - ten
-# myrsinites - mys
-# boreale - bor
-# macrocarpon - mac
-# oxycoccos - oxy
-# cespitosum - ces
-# membranaceum - mem
-# deliciosum - del
-# myrtillus - mtu
-# parvifolium - par
-# ovalifolium - ova
-# scoparium - sco
-# uliginosum - uli
-# stamineum - sta
-# ovatum - ova
-# arboreum - arb
-# crassifolium - cra
-# erythrocarpum - ery
-# vitis-idaea - vid
+ang – angustifolium
+arb – arboreum
+bor – boreale
+ces – cespitosum
+con – confertum
+cor – corymbosum
+cos – consanguineum
+cra – crassifolium
+crd – cordifolium
+dar – darrowii
+del – deliciosum
+ery – erythrocarpum
+gem – geminiflorum
+hir – hirsutum
+kun – kunthianum
+leu – leucanthum
+mac – macrocarpon
+mem – membranaceum
+mtu – myrtillus
+myr – myrtilloides
+mys – myrsinites
+ova – ovalifolium
+ovt – ovatum
+oxy – oxycoccos
+pal – pallidum
+par – parvifolium
+sco – scoparium
+sel – selerianum
+sha – shastense
+sta – stamineum
+ste – stenophyllum
+ten – tenellum
+uli – uliginosum
+vid – vitis-idaea
