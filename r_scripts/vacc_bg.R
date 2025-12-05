@@ -2,35 +2,35 @@
 # Sample ecoregions to establish background (bg) extent
 # Started Nov 20, 2024
 library(tidyverse)
-library(terra) 
-library(predicts)
-library(geodata)
-library(ENMTools)
-library(plotly) # 3D surface Kernel bivariate plots
-library(MASS)
+library(terra)
+library(tidyterra)
+library(kgc) # Ecoregions around the world
 
 # Ecoregion prep ----------------------------------------------------------
-# Download NA Ecoregion shapefile from: https://www.epa.gov/eco-research/ecoregions-north-america
-# Load shapefile from local files
-# Reusing files from Malus SDM
+### Because we are expanding occurrence beyond Canada, US and Mexico I am using a different dataset for ecoregions
+### Koppen-Greigger Climate Zones
+### Closely mirror the NA ecoregion EPA map actually... might be the same?
+### Use kcg package
 
-ecoNA <- vect(x = "C:/Users/terre/Documents/Acadia/Malus Project/maps/eco regions/na_cec_eco_l2/", layer = 'NA_CEC_Eco_Level2')
-ecoNA <- project(ecoNA, 'WGS84') # project ecoregion vector to same coords ref as basemap
 
-# (Down)Load basemaps -----------------------------------------------------
-us_map <- gadm(country = 'USA', level = 1, resolution = 2,
-               path = "./maps/base_maps/") #USA basemap w. States
-
-# Load basemaps and wclim data --------------------------------------------
-ca_map <- gadm(country = 'CA', level = 1, resolution = 2,
-               path = './maps/base_maps/') #Canada basemap w. Provinces
-
-mex_map <-gadm(country = 'MX', level = 1, resolution = 2,
-               path = './maps/base_maps/') # Mexico basemap w. States
-
-canUSMex_map <- rbind(us_map, ca_map, mex_map) # Combine Mexico, US and Canada vector map
-
+# Use worldclim as the strata to sample the background area of environments
 wclim <- geodata::worldclim_global(var = 'bio', res = 2.5, version = '2.1', path = "./wclim_data/")
+
+# Downloaded KG climate zone raster from this source:
+# https://koeppen-geiger.vu-wien.ac.at/present.htm
+
+kg_rast <- terra::rast("./maps/kg_climate/KG_1986-2010.grd") # load raster data
+
+# Need to name the climate regions
+# Note: this is much easier to do in terra and the R example on the webpage uses an outdated <raster> pkg workflow
+levels(kg_rast) <- data.frame(ID = 1:32,
+                              climate = c('Af','Am','As','Aw','BSh','BSk','BWh','BWk',
+                                        'Cfa','Cfb','Cfc','Csa','Csb','Csc','Cwa','Cwb','Cwc',
+                                        'Dfa','Dfb','Dfc','Dfd','Dsa','Dsb','Dsc','Dsd',
+                                        'Dwa','Dwb','Dwc','Dwd','EF','ET','Ocean'))
+
+# Now reproject the map onto the same CRS as the occurrence data
+kg_rast <- project(kg_rast, "+proj=longlat +datum=WGS84", method = 'near')
 
 # Load occurrence data ----------------------------------------------------
 occ_angThin <- readRDS(file = './occ_data/thinned/occ_angThin.Rdata')
@@ -57,273 +57,368 @@ occ_scoThin <- readRDS(file = './occ_data/thinned/occ_scoThin.Rdata')
 occ_staThin <- readRDS(file = './occ_data/thinned/occ_staThin.Rdata')
 occ_tenThin <- readRDS(file = './occ_data/thinned/occ_tenThin.Rdata')
 occ_uliThin <- readRDS(file = './occ_data/thinned/occ_uliThin.Rdata')
-occ_virThin <- readRDS(file = './occ_data/thinned/occ_virThin.Rdata')
-occ_vidThin <- readRDS(file = './occ_data/thinned/occ_vidThin.Rdata')
+# occ_virThin <- readRDS(file = './occ_data/thinned/occ_virThin.Rdata') # dropped because its included in V. corymbosum
+occ_leuThin <- readRDS(file = './occ_data/thinned/occ_leuThin.Rdata')
+occ_conThin <- readRDS(file = './occ_data/thinned/occ_conThin.Rdata')
+occ_steThin <- readRDS(file = './occ_data/thinned/occ_steThin.Rdata')
+occ_shaThin <- readRDS(file = './occ_data/thinned/occ_shaThin.Rdata')
+occ_gemThin <- readRDS(file = './occ_data/thinned/occ_gemThin.Rdata')
+occ_crdThin <- readRDS(file = './occ_data/thinned/occ_crdThin.Rdata')
+occ_cosThin <- readRDS(file = './occ_data/thinned/occ_cosThin.Rdata')
+occ_selThin <- readRDS(file = './occ_data/thinned/occ_selThin.Rdata')
+occ_kunThin <- readRDS(file = './occ_data/thinned/occ_kunThin.Rdata')
 
-# Extract ecogregions for each spp. ---------------------------------------
+# Chuck them in a list 
+# Note I reorder in alphabetical order, compared to earlier scripts
+occ_list <- list(
+  ang = occ_angThin,
+  arb = occ_arbThin,
+  bor = occ_borThin,
+  ces = occ_cesThin,
+  con = occ_conThin,
+  cor = occ_corThin,
+  cos = occ_cosThin,
+  cra = occ_craThin,
+  crd = occ_crdThin,
+  dar = occ_darThin,
+  del = occ_delThin,
+  ery = occ_eryThin,
+  gem = occ_gemThin,
+  hir = occ_hirThin,
+  kun = occ_kunThin,
+  leu = occ_leuThin,
+  mac = occ_macThin,
+  mem = occ_memThin,
+  mtu = occ_mtuThin,
+  myr = occ_myrThin,
+  mys = occ_mysThin,
+  ova = occ_ovaThin,
+  ovt = occ_ovtThin,
+  oxy = occ_oxyThin,
+  pal = occ_palThin,
+  par = occ_parThin,
+  sco = occ_scoThin,
+  sel = occ_selThin,
+  sha = occ_shaThin,
+  sta = occ_staThin,
+  ste = occ_steThin,
+  ten = occ_tenThin,
+  uli = occ_uliThin,
+  vid = occ_vidThin
+)
+
+# Extract coordinates from SpatVectors ------------------------------------
+# KG lookup expects df with 3 columns in order: site, long, late
+# Using species code as holder for site, will drop...
+# Building helper function to take list of occ vectors and convert to df for lookupCZ
+
+make_koppen_input <- function(occ_sv) {
+  coords <- terra::crds(occ_sv, df = TRUE) # convert SpatVector to df
+  
+  coords %>% dplyr::mutate(
+      rndCoord.lon = kgc::RoundCoordinates(x), # czlookup expects rounded coordinates
+      rndCoord.lat = kgc::RoundCoordinates(y)
+    ) %>%
+    
+    # Keep only Site ID + rounded coordinates
+    dplyr::mutate(
+      Site = paste0("pt", dplyr::row_number()), .before = rndCoord.lon # add "site IDs" as czlookup expects that in first col, just the number of pts
+    ) %>%
+    dplyr::select(Site, rndCoord.lon, rndCoord.lat) %>%
+    tidyr::drop_na() # drop an NAs
+}
+
+# create list of dataframes of species coordiates with 'site' placeholders as the n number of points
+# use helper function and occurrence list to create list of coordinates df 
+occ_coords <- lapply(occ_list, make_koppen_input)
+
+# Extract KG climate reginos for each spp. --------------------------------
+
+# Start!
+# tm <- Sys.time() # Time how long this takes, I think it will be faster than the old workflow because its raster based now
+# Took ~ 4 mins! Much much faster
+
 # V. angustifolium 
 tm <- Sys.time()
-eco_ang <- extract(ecoNA, occ_angThin)
-eco_ang_code <- eco_ang$NA_L2CODE %>% unique() 
-eco_ang_code <- eco_ang_code[!is.na(eco_ang_code) & eco_ang_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ang <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ang_code) # subset eco region spat vector by the codes
+kg_ang <- LookupCZ(occ_coords$ang) # Look up KG climate zones
+kg_ang <- as.character(kg_ang) # convert to character, from factor
+kg_ang <- unique(kg_ang) # return unique codes
+kg_ang <- kg_ang[kg_ang != "Climate Zone info missing"] # drop code for missing info...
+mask_ang <- kg_rast$climate %in% kg_ang # subset kg clim categories that contain occurrences to mask wclim data
+mask_ang[mask_ang == 0] <- NA # turn 0s into NAs so it behaves as a mask
+kg_ang_rast <- terra::mask(kg_rast$climate, mask_ang) # apply mask to climate layer
+saveRDS(kg_ang_rast, file = './bg_data/clim_regions/kg_ang_rast.Rdata') # save climate regions raster for downstream
 elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ang, file = './bg_data/eco_regions/ecoNA_ang.Rdata') # save Ecoregions for downstream
 
-# V. arboreum 
-tm <- Sys.time()
-eco_arb <- extract(ecoNA, occ_arbThin)
-eco_arb_code <- eco_arb$NA_L2CODE %>% unique() 
-eco_arb_code <- eco_arb_code[!is.na(eco_arb_code) & eco_arb_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_arb <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_arb_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_arb, file = './bg_data/eco_regions/ecoNA_arb.Rdata') # save Ecoregions for downstream
+# V. arboreum
+kg_arb <- LookupCZ(occ_coords$arb)
+kg_arb <- as.character(kg_arb)
+kg_arb <- unique(kg_arb) 
+kg_arb[kg_arb != "Climate Zone info missing"]
+saveRDS(kg_arb, file = './bg_data/clim_regions/kg_arb.Rdata') 
 
-# V. boreale 
-tm <- Sys.time()
-eco_bor <- extract(ecoNA, occ_borThin)
-eco_bor_code <- eco_bor$NA_L2CODE %>% unique() 
-eco_bor_code <- eco_bor_code[!is.na(eco_bor_code) & eco_bor_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_bor <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_bor_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_bor, file = './bg_data/eco_regions/ecoNA_bor.Rdata') # save Ecoregions for downstream
+# V. boreale
+kg_bor <- LookupCZ(occ_coords$bor)
+kg_bor <- as.character(kg_bor)
+kg_bor <- unique(kg_bor) 
+kg_bor[kg_bor != "Climate Zone info missing"]
+saveRDS(kg_bor, file = './bg_data/clim_regions/kg_bor.Rdata')
 
-# V. cespitosum 
-tm <- Sys.time()
-eco_ces <- extract(ecoNA, occ_cesThin)
-eco_ces_code <- eco_ces$NA_L2CODE %>% unique() 
-eco_ces_code <- eco_ces_code[!is.na(eco_ces_code) & eco_ces_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ces <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ces_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ces, file = './bg_data/eco_regions/ecoNA_ces.Rdata') # save Ecoregions for downstream
+# V. cespitosum
+kg_ces <- LookupCZ(occ_coords$ces)
+kg_ces <- as.character(kg_ces)
+kg_ces <- unique(kg_ces) 
+kg_ces[kg_ces != "Climate Zone info missing"]
+saveRDS(kg_ces, file = './bg_data/clim_regions/kg_ces.Rdata')
 
-# V. corymbosum 
-tm <- Sys.time()
-eco_cor <- extract(ecoNA, occ_corThin)
-eco_cor_code <- eco_cor$NA_L2CODE %>% unique() 
-eco_cor_code <- eco_cor_code[!is.na(eco_cor_code) & eco_cor_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_cor <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_cor_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_cor, file = './bg_data/eco_regions/ecoNA_cor.Rdata') # save Ecoregions for downstream
+# V. confertum
+kg_con <- LookupCZ(occ_coords$con)
+kg_con <- as.character(kg_con)
+kg_con <- unique(kg_con) 
+kg_con[kg_con != "Climate Zone info missing"]
+saveRDS(kg_con, file = './bg_data/clim_regions/kg_con.Rdata')
 
-# V. crassifolium 
-tm <- Sys.time()
-eco_cra <- extract(ecoNA, occ_craThin)
-eco_cra_code <- eco_cra$NA_L2CODE %>% unique() 
-eco_cra_code <- eco_cra_code[!is.na(eco_cra_code) & eco_cra_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_cra <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_cra_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_cra, file = './bg_data/eco_regions/ecoNA_cra.Rdata') # save Ecoregions for downstream
+# V. corymbosum
+kg_cor <- LookupCZ(occ_coords$cor)
+kg_cor <- as.character(kg_cor)
+kg_cor <- unique(kg_cor) 
+kg_cor[kg_cor != "Climate Zone info missing"]
+saveRDS(kg_cor, file = './bg_data/clim_regions/kg_cor.Rdata')
 
-# V. darrowii 
-tm <- Sys.time()
-eco_dar <- extract(ecoNA, occ_darThin)
-eco_dar_code <- eco_dar$NA_L2CODE %>% unique() 
-eco_dar_code <- eco_dar_code[!is.na(eco_dar_code) & eco_dar_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_dar <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_dar_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_dar, file = './bg_data/eco_regions/ecoNA_dar.Rdata') # save Ecoregions for downstream
+# V. consanguineum
+kg_cos <- LookupCZ(occ_coords$cos)
+kg_cos <- as.character(kg_cos)
+kg_cos <- unique(kg_cos) 
+kg_cos[kg_cos != "Climate Zone info missing"]
+saveRDS(kg_cos, file = './bg_data/clim_regions/kg_cos.Rdata')
 
-# V. deliciosum 
-tm <- Sys.time()
-eco_del <- extract(ecoNA, occ_delThin)
-eco_del_code <- eco_del$NA_L2CODE %>% unique() 
-eco_del_code <- eco_del_code[!is.na(eco_del_code) & eco_del_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_del <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_del_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_del, file = './bg_data/eco_regions/ecoNA_del.Rdata') # save Ecoregions for downstream
+# V. crassifolium
+kg_cra <- LookupCZ(occ_coords$cra)
+kg_cra <- as.character(kg_cra)
+kg_cra <- unique(kg_cra) 
+kg_cra[kg_cra != "Climate Zone info missing"]
+saveRDS(kg_cra, file = './bg_data/clim_regions/kg_cra.Rdata')
 
-# V. erythrocarpum 
-tm <- Sys.time()
-eco_ery <- extract(ecoNA, occ_eryThin)
-eco_ery_code <- eco_ery$NA_L2CODE %>% unique() 
-eco_ery_code <- eco_ery_code[!is.na(eco_ery_code) & eco_ery_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ery <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ery_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ery, file = './bg_data/eco_regions/ecoNA_ery.Rdata') # save Ecoregions for downstream
+# V. cordifolium
+kg_crd <- LookupCZ(occ_coords$crd)
+kg_crd <- as.character(kg_crd)
+kg_crd <- unique(kg_crd) 
+kg_crd[kg_crd != "Climate Zone info missing"]
+saveRDS(kg_crd, file = './bg_data/clim_regions/kg_crd.Rdata')
 
-# V. hirsutum 
-tm <- Sys.time()
-eco_hir <- extract(ecoNA, occ_hirThin)
-eco_hir_code <- eco_hir$NA_L2CODE %>% unique() 
-eco_hir_code <- eco_hir_code[!is.na(eco_hir_code) & eco_hir_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_hir <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_hir_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_hir, file = './bg_data/eco_regions/ecoNA_hir.Rdata') # save Ecoregions for downstream
+# V. darrowii
+kg_dar <- LookupCZ(occ_coords$dar)
+kg_dar <- as.character(kg_dar)
+kg_dar <- unique(kg_dar) 
+kg_dar[kg_dar != "Climate Zone info missing"]
+saveRDS(kg_dar, file = './bg_data/clim_regions/kg_dar.Rdata')
 
-# V. macrocarpon 
-tm <- Sys.time()
-eco_mac <- extract(ecoNA, occ_macThin)
-eco_mac_code <- eco_mac$NA_L2CODE %>% unique() 
-eco_mac_code <- eco_mac_code[!is.na(eco_mac_code) & eco_mac_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_mac <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_mac_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_mac, file = './bg_data/eco_regions/ecoNA_mac.Rdata') # save Ecoregions for downstream
+# V. deliciosum
+kg_del <- LookupCZ(occ_coords$del)
+kg_del <- as.character(kg_del)
+kg_del <- unique(kg_del) 
+kg_del[kg_del != "Climate Zone info missing"]
+saveRDS(kg_del, file = './bg_data/clim_regions/kg_del.Rdata')
 
-# V. membranaceum 
-tm <- Sys.time()
-eco_mem <- extract(ecoNA, occ_memThin)
-eco_mem_code <- eco_mem$NA_L2CODE %>% unique() 
-eco_mem_code <- eco_mem_code[!is.na(eco_mem_code) & eco_mem_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_mem <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_mem_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_mem, file = './bg_data/eco_regions/ecoNA_mem.Rdata') # save Ecoregions for downstream
+# V. erythrocarpum
+kg_ery <- LookupCZ(occ_coords$ery)
+kg_ery <- as.character(kg_ery)
+kg_ery <- unique(kg_ery) 
+kg_ery[kg_ery != "Climate Zone info missing"]
+saveRDS(kg_ery, file = './bg_data/clim_regions/kg_ery.Rdata')
 
-# V. myrsinites 
-tm <- Sys.time()
-eco_mys <- extract(ecoNA, occ_mysThin)
-eco_mys_code <- eco_mys$NA_L2CODE %>% unique() 
-eco_mys_code <- eco_mys_code[!is.na(eco_mys_code) & eco_mys_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_mys <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_mys_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_mys, file = './bg_data/eco_regions/ecoNA_mys.Rdata') # save Ecoregions for downstream
+# V. geminiflorum
+kg_gem <- LookupCZ(occ_coords$gem)
+kg_gem <- as.character(kg_gem)
+kg_gem <- unique(kg_gem) 
+kg_gem[kg_gem != "Climate Zone info missing"]
+saveRDS(kg_gem, file = './bg_data/clim_regions/kg_gem.Rdata')
 
-# V. myrtilloides 
-tm <- Sys.time()
-eco_myr <- extract(ecoNA, occ_myrThin)
-eco_myr_code <- eco_myr$NA_L2CODE %>% unique() 
-eco_myr_code <- eco_myr_code[!is.na(eco_myr_code) & eco_myr_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_myr <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_myr_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_myr, file = './bg_data/eco_regions/ecoNA_myr.Rdata') # save Ecoregions for downstream
+# V. hirsutum
+kg_hir <- LookupCZ(occ_coords$hir)
+kg_hir <- as.character(kg_hir)
+kg_hir <- unique(kg_hir) 
+kg_hir[kg_hir != "Climate Zone info missing"]
+saveRDS(kg_hir, file = './bg_data/clim_regions/kg_hir.Rdata')
 
-# V. myrtillus 
-tm <- Sys.time()
-eco_mtu <- extract(ecoNA, occ_mtuThin)
-eco_mtu_code <- eco_mtu$NA_L2CODE %>% unique() 
-eco_mtu_code <- eco_mtu_code[!is.na(eco_mtu_code) & eco_mtu_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_mtu <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_mtu_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_mtu, file = './bg_data/eco_regions/ecoNA_mtu.Rdata') # save Ecoregions for downstream
+# V. kunthianum
+kg_kun <- LookupCZ(occ_coords$kun)
+kg_kun <- as.character(kg_kun)
+kg_kun <- unique(kg_kun) 
+kg_kun[kg_kun != "Climate Zone info missing"]
+saveRDS(kg_kun, file = './bg_data/clim_regions/kg_kun.Rdata')
 
-# V. ovalifolium 
-tm <- Sys.time()
-eco_ova <- extract(ecoNA, occ_ovaThin)
-eco_ova_code <- eco_ova$NA_L2CODE %>% unique() 
-eco_ova_code <- eco_ova_code[!is.na(eco_ova_code) & eco_ova_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ova <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ova_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ova, file = './bg_data/eco_regions/ecoNA_ova.Rdata') # save Ecoregions for downstream
+# V. leucanthum
+kg_leu <- LookupCZ(occ_coords$leu)
+kg_leu <- as.character(kg_leu)
+kg_leu <- unique(kg_leu) 
+kg_leu[kg_leu != "Climate Zone info missing"]
+saveRDS(kg_leu, file = './bg_data/clim_regions/kg_leu.Rdata')
 
-# V. ovatum 
-tm <- Sys.time()
-eco_ovt <- extract(ecoNA, occ_ovtThin)
-eco_ovt_code <- eco_ovt$NA_L2CODE %>% unique() 
-eco_ovt_code <- eco_ovt_code[!is.na(eco_ovt_code) & eco_ovt_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ovt <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ovt_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ovt, file = './bg_data/eco_regions/ecoNA_ovt.Rdata') # save Ecoregions for downstream
+# V. macrocarpon
+kg_mac <- LookupCZ(occ_coords$mac)
+kg_mac <- as.character(kg_mac)
+kg_mac <- unique(kg_mac) 
+kg_mac[kg_mac != "Climate Zone info missing"]
+saveRDS(kg_mac, file = './bg_data/clim_regions/kg_mac.Rdata')
 
-# V. oxycoccos 
-tm <- Sys.time()
-eco_oxy <- extract(ecoNA, occ_oxyThin)
-eco_oxy_code <- eco_oxy$NA_L2CODE %>% unique() 
-eco_oxy_code <- eco_oxy_code[!is.na(eco_oxy_code) & eco_oxy_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_oxy <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_oxy_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_oxy, file = './bg_data/eco_regions/ecoNA_oxy.Rdata') # save Ecoregions for downstream
+# V. membranaceum
+kg_mem <- LookupCZ(occ_coords$mem)
+kg_mem <- as.character(kg_mem)
+kg_mem <- unique(kg_mem) 
+kg_mem[kg_mem != "Climate Zone info missing"]
+saveRDS(kg_mem, file = './bg_data/clim_regions/kg_mem.Rdata')
 
-# V. pallidum 
-tm <- Sys.time()
-eco_pal <- extract(ecoNA, occ_palThin)
-eco_pal_code <- eco_pal$NA_L2CODE %>% unique() 
-eco_pal_code <- eco_pal_code[!is.na(eco_pal_code) & eco_pal_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_pal <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_pal_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_pal, file = './bg_data/eco_regions/ecoNA_pal.Rdata') # save Ecoregions for downstream
+# V. myrtillus
+kg_mtu <- LookupCZ(occ_coords$mtu)
+kg_mtu <- as.character(kg_mtu)
+kg_mtu <- unique(kg_mtu) 
+kg_mtu[kg_mtu != "Climate Zone info missing"]
+saveRDS(kg_mtu, file = './bg_data/clim_regions/kg_mtu.Rdata')
 
-# V. parvifolium 
-tm <- Sys.time()
-eco_par <- extract(ecoNA, occ_parThin)
-eco_par_code <- eco_par$NA_L2CODE %>% unique() 
-eco_par_code <- eco_par_code[!is.na(eco_par_code) & eco_par_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_par <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_par_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_par, file = './bg_data/eco_regions/ecoNA_par.Rdata') # save Ecoregions for downstream
+# V. myrtilloides
+kg_myr <- LookupCZ(occ_coords$myr)
+kg_myr <- as.character(kg_myr)
+kg_myr <- unique(kg_myr) 
+kg_myr[kg_myr != "Climate Zone info missing"]
+saveRDS(kg_myr, file = './bg_data/clim_regions/kg_myr.Rdata')
 
-# V. scoparium 
-tm <- Sys.time()
-eco_sco <- extract(ecoNA, occ_scoThin)
-eco_sco_code <- eco_sco$NA_L2CODE %>% unique() 
-eco_sco_code <- eco_sco_code[!is.na(eco_sco_code) & eco_sco_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_sco <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_sco_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_sco, file = './bg_data/eco_regions/ecoNA_sco.Rdata') # save Ecoregions for downstream
+# V. myrsinites
+kg_mys <- LookupCZ(occ_coords$mys)
+kg_mys <- as.character(kg_mys)
+kg_mys <- unique(kg_mys) 
+kg_mys[kg_mys != "Climate Zone info missing"]
+saveRDS(kg_mys, file = './bg_data/clim_regions/kg_mys.Rdata')
 
-# V. stamineum 
-tm <- Sys.time()
-eco_sta <- extract(ecoNA, occ_staThin)
-eco_sta_code <- eco_sta$NA_L2CODE %>% unique() 
-eco_sta_code <- eco_sta_code[!is.na(eco_sta_code) & eco_sta_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_sta <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_sta_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_sta, file = './bg_data/eco_regions/ecoNA_sta.Rdata') # save Ecoregions for downstream
+# V. ovalifolium
+kg_ova <- LookupCZ(occ_coords$ova)
+kg_ova <- as.character(kg_ova)
+kg_ova <- unique(kg_ova) 
+kg_ova[kg_ova != "Climate Zone info missing"]
+saveRDS(kg_ova, file = './bg_data/clim_regions/kg_ova.Rdata')
 
-# V. tenellum 
-tm <- Sys.time()
-eco_ten <- extract(ecoNA, occ_tenThin)
-eco_ten_code <- eco_ten$NA_L2CODE %>% unique() 
-eco_ten_code <- eco_ten_code[!is.na(eco_ten_code) & eco_ten_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_ten <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_ten_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_ten, file = './bg_data/eco_regions/ecoNA_ten.Rdata') # save Ecoregions for downstream
+# V. ovatum
+kg_ovt <- LookupCZ(occ_coords$ovt)
+kg_ovt <- as.character(kg_ovt)
+kg_ovt <- unique(kg_ovt) 
+kg_ovt[kg_ovt != "Climate Zone info missing"]
+saveRDS(kg_ovt, file = './bg_data/clim_regions/kg_ovt.Rdata')
+
+# V. oxycoccos
+kg_oxy <- LookupCZ(occ_coords$oxy)
+kg_oxy <- as.character(kg_oxy)
+kg_oxy <- unique(kg_oxy) 
+kg_oxy[kg_oxy != "Climate Zone info missing"]
+saveRDS(kg_oxy, file = './bg_data/clim_regions/kg_oxy.Rdata')
+
+# V. pallidum
+kg_pal <- LookupCZ(occ_coords$pal)
+kg_pal <- as.character(kg_pal)
+kg_pal <- unique(kg_pal) 
+kg_pal[kg_pal != "Climate Zone info missing"]
+saveRDS(kg_pal, file = './bg_data/clim_regions/kg_pal.Rdata')
+
+# V. parvifolium
+kg_par <- LookupCZ(occ_coords$par)
+kg_par <- as.character(kg_par)
+kg_par <- unique(kg_par) 
+kg_par[kg_par != "Climate Zone info missing"]
+saveRDS(kg_par, file = './bg_data/clim_regions/kg_par.Rdata')
+
+# V. scoparium
+kg_sco <- LookupCZ(occ_coords$sco)
+kg_sco <- as.character(kg_sco)
+kg_sco <- unique(kg_sco) 
+kg_sco[kg_sco != "Climate Zone info missing"]
+saveRDS(kg_sco, file = './bg_data/clim_regions/kg_sco.Rdata')
+
+# V. selerianum
+kg_sel <- LookupCZ(occ_coords$sel)
+kg_sel <- as.character(kg_sel)
+kg_sel <- unique(kg_sel) 
+kg_sel[kg_sel != "Climate Zone info missing"]
+saveRDS(kg_sel, file = './bg_data/clim_regions/kg_sel.Rdata')
+
+# V. shastense
+kg_sha <- LookupCZ(occ_coords$sha)
+kg_sha <- as.character(kg_sha)
+kg_sha <- unique(kg_sha) 
+kg_sha[kg_sha != "Climate Zone info missing"]
+saveRDS(kg_sha, file = './bg_data/clim_regions/kg_sha.Rdata')
+
+# V. stamineum
+kg_sta <- LookupCZ(occ_coords$sta)
+kg_sta <- as.character(kg_sta)
+kg_sta <- unique(kg_sta) 
+kg_sta[kg_sta != "Climate Zone info missing"]
+saveRDS(kg_sta, file = './bg_data/clim_regions/kg_sta.Rdata')
+
+# V. stenophyllum
+kg_ste <- LookupCZ(occ_coords$ste)
+kg_ste <- as.character(kg_ste)
+kg_ste <- unique(kg_ste) 
+kg_ste[kg_ste != "Climate Zone info missing"]
+saveRDS(kg_ste, file = './bg_data/clim_regions/kg_ste.Rdata')
+
+# V. tenellum
+kg_ten <- LookupCZ(occ_coords$ten)
+kg_ten <- as.character(kg_ten)
+kg_ten <- unique(kg_ten) 
+kg_ten[kg_ten != "Climate Zone info missing"]
+saveRDS(kg_ten, file = './bg_data/clim_regions/kg_ten.Rdata')
 
 # V. uliginosum
-tm <- Sys.time()
-eco_uli <- extract(ecoNA, occ_uliThin)
-eco_uli_code <- eco_uli$NA_L2CODE %>% unique() 
-eco_uli_code <- eco_uli_code[!is.na(eco_uli_code) & eco_uli_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_uli <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_uli_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_uli, file = './bg_data/eco_regions/ecoNA_uli.Rdata') # save Ecoregions for downstream
-
-# V. virgatum 
-tm <- Sys.time()
-eco_vir <- extract(ecoNA, occ_virThin)
-eco_vir_code <- eco_vir$NA_L2CODE %>% unique() 
-eco_vir_code <- eco_vir_code[!is.na(eco_vir_code) & eco_vir_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_vir <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_vir_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_vir, file = './bg_data/eco_regions/ecoNA_vir.Rdata') # save Ecoregions for downstream
+kg_uli <- LookupCZ(occ_coords$uli)
+kg_uli <- as.character(kg_uli)
+kg_uli <- unique(kg_uli) 
+kg_uli[kg_uli != "Climate Zone info missing"]
+saveRDS(kg_uli, file = './bg_data/clim_regions/kg_uli.Rdata')
 
 # V. vitis-idaea
-tm <- Sys.time()
-eco_vid <- extract(ecoNA, occ_vidThin)
-eco_vid_code <- eco_vid$NA_L2CODE %>% unique() 
-eco_vid_code <- eco_vid_code[!is.na(eco_vid_code) & eco_vid_code != '0.0']  #remove the 'water' '0.0' and NA ecoregions
-ecoNA_vid <- terra::subset(ecoNA, ecoNA$NA_L2CODE %in% eco_vid_code) # subset eco region spat vector by the codes
-elasped <- (Sys.time() - tm) %>% print()
-saveRDS(ecoNA_vid, file = './bg_data/eco_regions/ecoNA_vid.Rdata') # save Ecoregions for downstream
+kg_vid <- LookupCZ(occ_coords$vid)
+kg_vid <- as.character(kg_vid)
+kg_vid <- unique(kg_vid) 
+kg_vid[kg_vid != "Climate Zone info missing"]
+saveRDS(kg_vid, file = './bg_data/clim_regions/kg_vid.Rdata')
 
+# elasped <- (Sys.time() - tm) %>% print()
 
 # Load Ecoregions ---------------------------------------------------------
-ecoNA_arb <- readRDS(file = "./bg_data/eco_regions/ecoNA_arb.Rdata")
-ecoNA_ang <- readRDS(file = "./bg_data/eco_regions/ecoNA_ang.Rdata")
-ecoNA_arb <- readRDS(file = "./bg_data/eco_regions/ecoNA_arb.Rdata")
-ecoNA_bor <- readRDS(file = "./bg_data/eco_regions/ecoNA_bor.Rdata")
-ecoNA_ces <- readRDS(file = "./bg_data/eco_regions/ecoNA_ces.Rdata")
-ecoNA_cor <- readRDS(file = "./bg_data/eco_regions/ecoNA_cor.Rdata")
-ecoNA_cra <- readRDS(file = "./bg_data/eco_regions/ecoNA_cra.Rdata")
-ecoNA_dar <- readRDS(file = "./bg_data/eco_regions/ecoNA_dar.Rdata")
-ecoNA_del <- readRDS(file = "./bg_data/eco_regions/ecoNA_del.Rdata")
-ecoNA_ery <- readRDS(file = "./bg_data/eco_regions/ecoNA_ery.Rdata")
-ecoNA_hir <- readRDS(file = "./bg_data/eco_regions/ecoNA_hir.Rdata")
-ecoNA_mac <- readRDS(file = "./bg_data/eco_regions/ecoNA_mac.Rdata")
-ecoNA_mem <- readRDS(file = "./bg_data/eco_regions/ecoNA_mem.Rdata")
-ecoNA_mys <- readRDS(file = "./bg_data/eco_regions/ecoNA_mys.Rdata")
-ecoNA_myr <- readRDS(file = "./bg_data/eco_regions/ecoNA_myr.Rdata")
-ecoNA_mtu <- readRDS(file = "./bg_data/eco_regions/ecoNA_mtu.Rdata") 
-ecoNA_ova <- readRDS(file = "./bg_data/eco_regions/ecoNA_ova.Rdata") 
-ecoNA_ovt <- readRDS(file = "./bg_data/eco_regions/ecoNA_ovt.Rdata")
-ecoNA_oxy <- readRDS(file = "./bg_data/eco_regions/ecoNA_oxy.Rdata")
-ecoNA_pal <- readRDS(file = "./bg_data/eco_regions/ecoNA_pal.Rdata")
-ecoNA_par <- readRDS(file = "./bg_data/eco_regions/ecoNA_par.Rdata")
-ecoNA_sco <- readRDS(file = "./bg_data/eco_regions/ecoNA_sco.Rdata")
-ecoNA_sta <- readRDS(file = "./bg_data/eco_regions/ecoNA_sta.Rdata")
-ecoNA_ten <- readRDS(file = "./bg_data/eco_regions/ecoNA_ten.Rdata")
-ecoNA_uli <- readRDS(file = "./bg_data/eco_regions/ecoNA_uli.Rdata")
-ecoNA_vir <- readRDS(file = "./bg_data/eco_regions/ecoNA_vir.Rdata")
-ecoNA_vid <- readRDS(file = "./bg_data/eco_regions/ecoNA_vid.Rdata")
+# Only run if needing to reload the climate region codes
+# kg_ang <- readRDS("./bg_data/clim_regions/kg_ang.Rdata")
+# kg_arb <- readRDS("./bg_data/clim_regions/kg_arb.Rdata")
+# kg_bor <- readRDS("./bg_data/clim_regions/kg_bor.Rdata")
+# kg_ces <- readRDS("./bg_data/clim_regions/kg_ces.Rdata")
+# kg_con <- readRDS("./bg_data/clim_regions/kg_con.Rdata")
+# kg_cor <- readRDS("./bg_data/clim_regions/kg_cor.Rdata")
+# kg_cos <- readRDS("./bg_data/clim_regions/kg_cos.Rdata")
+# kg_cra <- readRDS("./bg_data/clim_regions/kg_cra.Rdata")
+# kg_crd <- readRDS("./bg_data/clim_regions/kg_crd.Rdata")
+# kg_dar <- readRDS("./bg_data/clim_regions/kg_dar.Rdata")
+# kg_del <- readRDS("./bg_data/clim_regions/kg_del.Rdata")
+# kg_ery <- readRDS("./bg_data/clim_regions/kg_ery.Rdata")
+# kg_gem <- readRDS("./bg_data/clim_regions/kg_gem.Rdata")
+# kg_hir <- readRDS("./bg_data/clim_regions/kg_hir.Rdata")
+# kg_kun <- readRDS("./bg_data/clim_regions/kg_kun.Rdata")
+# kg_leu <- readRDS("./bg_data/clim_regions/kg_leu.Rdata")
+# kg_mac <- readRDS("./bg_data/clim_regions/kg_mac.Rdata")
+# kg_mem <- readRDS("./bg_data/clim_regions/kg_mem.Rdata")
+# kg_mtu <- readRDS("./bg_data/clim_regions/kg_mtu.Rdata")
+# kg_myr <- readRDS("./bg_data/clim_regions/kg_myr.Rdata")
+# kg_mys <- readRDS("./bg_data/clim_regions/kg_mys.Rdata")
+# kg_ova <- readRDS("./bg_data/clim_regions/kg_ova.Rdata")
+# kg_ovt <- readRDS("./bg_data/clim_regions/kg_ovt.Rdata")
+# kg_oxy <- readRDS("./bg_data/clim_regions/kg_oxy.Rdata")
+# kg_pal <- readRDS("./bg_data/clim_regions/kg_pal.Rdata")
+# kg_par <- readRDS("./bg_data/clim_regions/kg_par.Rdata")
+# kg_sco <- readRDS("./bg_data/clim_regions/kg_sco.Rdata")
+# kg_sel <- readRDS("./bg_data/clim_regions/kg_sel.Rdata")
+# kg_sha <- readRDS("./bg_data/clim_regions/kg_sha.Rdata")
+# kg_sta <- readRDS("./bg_data/clim_regions/kg_sta.Rdata")
+# kg_ste <- readRDS("./bg_data/clim_regions/kg_ste.Rdata")
+# kg_ten <- readRDS("./bg_data/clim_regions/kg_ten.Rdata")
+# kg_uli <- readRDS("./bg_data/clim_regions/kg_uli.Rdata")
+# kg_vid <- readRDS("./bg_data/clim_regions/kg_vid.Rdata")
 
 
 # Crop wclim layers to ecoregions -----------------------------------------
