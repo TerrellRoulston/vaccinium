@@ -9,18 +9,8 @@ library(geodata) # basemaps and climate data
 
 
 # Load cleaned occ data ---------------------------------------------------
-occ_ang_clean <- readRDS(file = "./occ_data/clean/occ_ang_clean.Rdata") %>% mutate(source = 'gbif')
-pankaj_occ_ang <- read.csv(file = './occ_data/pankaj_v_ang_lon_lat.csv', fileEncoding = "UTF-8-BOM") %>% mutate(source = 'pankaj') 
-occ_ang_cleanPankaj <- merge(
-  occ_ang_clean,
-  pankaj_occ_ang,
-  by.x = c("decimalLatitude", "decimalLongitude", 'source'),
-  by.y = c("lat", "lon", 'source'),
-  all = TRUE # Keep all rows (adjust if needed)
-)
-
-
-
+# NOTE THAT V. VIRGATUM IS A SYN OF CORYMBOSSUM AND THUS I DO NOT MODEL SEPARATELY
+occ_ang_clean <- readRDS(file = "./occ_data/clean/occ_ang_clean.Rdata")
 occ_arb_clean <- readRDS(file = "./occ_data/clean/occ_arb_clean.Rdata")
 occ_bor_clean <- readRDS(file = "./occ_data/clean/occ_bor_clean.Rdata")
 occ_ces_clean <- readRDS(file = "./occ_data/clean/occ_ces_clean.Rdata")
@@ -45,11 +35,20 @@ occ_sta_clean <- readRDS(file = "./occ_data/clean/occ_sta_clean.Rdata")
 occ_ten_clean <- readRDS(file = "./occ_data/clean/occ_ten_clean.Rdata")
 occ_uli_clean <- readRDS(file = "./occ_data/clean/occ_uli_clean.Rdata")
 occ_vid_clean <- readRDS(file = "./occ_data/clean/occ_vid_clean.Rdata")
-occ_vir_clean <- readRDS(file = "./occ_data/clean/occ_vir_clean.Rdata")
+# occ_vir_clean <- readRDS(file = "./occ_data/clean/occ_vir_clean.Rdata")
+occ_leu_clean <- readRDS(file = "./occ_data/clean/occ_leu_clean.Rdata")
+occ_con_clean <- readRDS(file = "./occ_data/clean/occ_con_clean.Rdata")
+occ_ste_clean <- readRDS(file = "./occ_data/clean/occ_ste_clean.Rdata")
+occ_sha_clean <- readRDS(file = "./occ_data/clean/occ_sha_clean.Rdata")
+occ_gem_clean <- readRDS(file = "./occ_data/clean/occ_gem_clean.Rdata")
+occ_crd_clean <- readRDS(file = "./occ_data/clean/occ_crd_clean.Rdata")
+occ_cos_clean <- readRDS(file = "./occ_data/clean/occ_cos_clean.Rdata")
+occ_sel_clean <- readRDS(file = "./occ_data/clean/occ_sel_clean.Rdata")
+occ_kun_clean <- readRDS(file = "./occ_data/clean/occ_kun_clean.Rdata")
+
 
 # Vectorize occurrence dataframe
 occ_ang_vect <- vect(occ_ang_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
-occ_angPankaj_vect <- vect(occ_ang_cleanPankaj, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84") 
 occ_arb_vect <- vect(occ_arb_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
 occ_bor_vect <- vect(occ_bor_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
 occ_ces_vect <- vect(occ_ces_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
@@ -74,7 +73,16 @@ occ_sta_vect <- vect(occ_sta_clean, geom = c('decimalLongitude', 'decimalLatitud
 occ_ten_vect <- vect(occ_ten_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
 occ_uli_vect <- vect(occ_uli_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
 occ_vid_vect <- vect(occ_vid_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
-occ_vir_vect <- vect(occ_vir_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+# occ_vir_vect <- vect(occ_vir_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_leu_vect <- vect(occ_leu_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_con_vect <- vect(occ_con_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_ste_vect <- vect(occ_ste_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_sha_vect <- vect(occ_sha_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_gem_vect <- vect(occ_gem_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_crd_vect <- vect(occ_crd_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_cos_vect <- vect(occ_cos_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_sel_vect <- vect(occ_sel_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
+occ_kun_vect <- vect(occ_kun_clean, geom = c('decimalLongitude', 'decimalLatitude'), crs = "+proj=longlat +datum=WGS84")
 
 
 # Download WorldClim Bioclimatic raster -----------------------------------
@@ -87,10 +95,8 @@ wclim <- worldclim_global(var = 'bio', res = 2.5, version = '2.1', path = "./wcl
 # Thin using sampler ------------------------------------------------------
 set.seed(1337) # set random generator seed to get reproducible results
 
-# V. angustifolium thinning
-occ_angThin <- spatSample(occ_ang_vect, size = 1, strata = wclim) #sample one occurrence from each climatic cell
-occ_angPankajThin <- spatSample(occ_angPankaj_vect, size = 1, strata = wclim) 
-#terra::as.data.frame(occ_angPankajThin) %>% filter(source == 'pankaj') # Peak at which samples were retained from Pankaj's collection
+# Thinning one occurrence within each grid cell from wclim
+occ_angThin <- spatSample(occ_ang_vect, size = 1, strata = wclim) 
 occ_arbThin <- spatSample(occ_arb_vect, size = 1, strata = wclim) 
 occ_borThin <- spatSample(occ_bor_vect, size = 1, strata = wclim) 
 occ_cesThin <- spatSample(occ_ces_vect, size = 1, strata = wclim) 
@@ -115,12 +121,19 @@ occ_staThin <- spatSample(occ_sta_vect, size = 1, strata = wclim)
 occ_tenThin <- spatSample(occ_ten_vect, size = 1, strata = wclim) 
 occ_uliThin <- spatSample(occ_uli_vect, size = 1, strata = wclim) 
 occ_vidThin <- spatSample(occ_vid_vect, size = 1, strata = wclim) 
-occ_virThin <- spatSample(occ_vir_vect, size = 1, strata = wclim) 
-
+# occ_virThin <- spatSample(occ_vir_vect, size = 1, strata = wclim) 
+occ_leuThin <- spatSample(occ_leu_vect, size = 1, strata = wclim)
+occ_conThin <- spatSample(occ_con_vect, size = 1, strata = wclim) 
+occ_steThin <- spatSample(occ_ste_vect, size = 1, strata = wclim)
+occ_shaThin <- spatSample(occ_sha_vect, size = 1, strata = wclim) 
+occ_gemThin <- spatSample(occ_gem_vect, size = 1, strata = wclim) 
+occ_crdThin <- spatSample(occ_crd_vect, size = 1, strata = wclim) 
+occ_cosThin <- spatSample(occ_cos_vect, size = 1, strata = wclim) 
+occ_selThin <- spatSample(occ_sel_vect, size = 1, strata = wclim) 
+occ_kunThin <- spatSample(occ_kun_vect, size = 1, strata = wclim) 
 
 # Save vectorized thinned occurrences -------------------------------------
 saveRDS(occ_angThin, file = './occ_data/thinned/occ_angThin.Rdata')
-saveRDS(occ_angPankajThin, file = './occ_data/thinned/occ_angPankajThin.Rdata')
 saveRDS(occ_arbThin, file = './occ_data/thinned/occ_arbThin.Rdata')
 saveRDS(occ_borThin, file = './occ_data/thinned/occ_borThin.Rdata')
 saveRDS(occ_cesThin, file = './occ_data/thinned/occ_cesThin.Rdata')
@@ -145,6 +158,15 @@ saveRDS(occ_staThin, file = './occ_data/thinned/occ_staThin.Rdata')
 saveRDS(occ_tenThin, file = './occ_data/thinned/occ_tenThin.Rdata')
 saveRDS(occ_uliThin, file = './occ_data/thinned/occ_uliThin.Rdata')
 saveRDS(occ_vidThin, file = './occ_data/thinned/occ_vidThin.Rdata')
-saveRDS(occ_virThin, file = './occ_data/thinned/occ_virThin.Rdata')
+# saveRDS(occ_virThin, file = './occ_data/thinned/occ_virThin.Rdata')
+saveRDS(occ_leuThin, file = './occ_data/thinned/occ_leuThin.Rdata')
+saveRDS(occ_conThin, file = './occ_data/thinned/occ_conThin.Rdata')
+saveRDS(occ_steThin, file = './occ_data/thinned/occ_steThin.Rdata')
+saveRDS(occ_shaThin, file = './occ_data/thinned/occ_shaThin.Rdata')
+saveRDS(occ_gemThin, file = './occ_data/thinned/occ_gemThin.Rdata')
+saveRDS(occ_crdThin, file = './occ_data/thinned/occ_crdThin.Rdata')
+saveRDS(occ_cosThin, file = './occ_data/thinned/occ_cosThin.Rdata')
+saveRDS(occ_selThin, file = './occ_data/thinned/occ_selThin.Rdata')
+saveRDS(occ_kunThin, file = './occ_data/thinned/occ_kunThin.Rdata')
 
 
