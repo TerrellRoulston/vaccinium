@@ -4,7 +4,7 @@
 # Vaccinium pallidum	2882895, 8032646 (Vaccinium vacillans)
 # Vaccinium hirsutum	2882824
 # Vaccinium darrowii	2882908
-# Vaccinium virgatum	2882884
+# Vaccinium virgatum	2882884 (NOTE DROPPING THIS BC = V. corymbossum, FNA vol 9, GBIF)
 # Vaccinium tenellum	2882847
 # Vaccinium myrsinites	2882937
 # Vaccinium boreale	8147903
@@ -24,3 +24,13 @@
 # Vaccinium crassifolium 2882960
 # Vaccinium erythrocarpum 2882844
 # Vaccinium vitis-idaea	2882835
+# ADDED LATER
+# Vaccinium leucanthum 4171440
+# Vaccinium confertum 7328893
+# Vaccinium stenophyllum 4167742
+# Vaccinium shastense 7936270
+# Vaccinium geminiflorum 2882930
+# Vaccinium cordifolium 4174484
+# Vaccinium consanguineum 7328886
+# Vaccinium selerianum 4168278
+# Vaccinium kunthianum 4171763
