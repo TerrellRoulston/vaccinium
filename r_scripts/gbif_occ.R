@@ -128,9 +128,9 @@ library(rgbif) # access GBIF data
   #take previously downloaded data, bring it into df
 
 # GBIF user info
-user='REDACTED'
-pwd='REDACTED'
-email='REDACTED'
+# user='REDACTED'
+# pwd='REDACTED'
+# email='REDACTED'
 
 # Taxon IDs ---------------------------------------------------------------
 # Vaccinium angustifolium	2882868
@@ -210,16 +210,12 @@ email='REDACTED'
 # kunthianum - kun
 
 # SCRIPT ------------------------------------------------------------------
-# source("scripts/gbif_login.R")
+source("./r_scripts/gbif_login.R")
 ##The above script is in .gitignore for ease of development
 ##It contains only the below code
-##Instantiate the gbif_credentials list as you see fit
-
-# gbif_credentials <- list(
 #   user ='REDACTED',
 #   pwd ='REDACTED',
 #   email ='REDACTED'
-# )
 
 
 # V. angustifolium download -----------------------------------------------
@@ -242,7 +238,7 @@ down_code = occ_download(
 occ_download_wait(down_code)
 download_ang <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
 df_ang <- occ_download_import(download_ang) #import the download, which is actually a tsv and now csv as indicated...
-write.csv(df_sel, file = './occ_data/raw/occ_ang.csv') # save the download file under a clean new name
+write.csv(df_ang, file = './occ_data/raw/occ_ang.csv') # save the download file under a clean new name
 file.remove(download_ang) # delete the old ugly-named GBIF file
 
 # V. corymbosum download --------------------------------------------------
@@ -356,26 +352,30 @@ write.csv(df_dar, file = './occ_data/raw/occ_dar.csv') # save the download file 
 file.remove(download_dar) # delete the old ugly-named GBIF file
 
 # V. virgatum download ----------------------------------------------------
-taxonKey <- 2882884
-basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
-hasCoordinates <- TRUE # limit to records with coordinates
-country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
-
-# Download data
-down_code = occ_download(
-  pred("taxonKey", taxonKey),
-  pred_in("basisOfRecord", basisOfRecord),
-  pred("hasCoordinate", hasCoordinates),
-  pred_in("country", country_codes),
-  format = "DWCA",
-  user=user, pwd=pwd, email=email)
-
-# Wait for download to finish
-occ_download_wait(down_code)
-download_vir <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
-df_vir <- occ_download_import(download_vir) #import the download, which is actually a tsv and now csv as indicated...
-write.csv(df_vir, file = './occ_data/raw/occ_vir.csv') # save the download file under a clean new name
-file.remove(download_vir) # delete the old ugly-named GBIF file
+# NOTE THAT IS ACTUALLY TREATED AS AS SYN OF CORYMBOSSUM IN FNA vol 9
+# GBIF aslo treats as synonum. 
+# I am keeping code here, and occurrence files but will not model seperatetly...
+# Sticking to accepted taxonomy...
+# taxonKey <- 2882884
+# basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
+# hasCoordinates <- TRUE # limit to records with coordinates
+# country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
+# 
+# # Download data
+# down_code = occ_download(
+#   pred("taxonKey", taxonKey),
+#   pred_in("basisOfRecord", basisOfRecord),
+#   pred("hasCoordinate", hasCoordinates),
+#   pred_in("country", country_codes),
+#   format = "DWCA",
+#   user=user, pwd=pwd, email=email)
+# 
+# # Wait for download to finish
+# occ_download_wait(down_code)
+# download_vir <- occ_download_get(down_code[1], overwrite = TRUE, path = './occ_data/raw/')
+# df_vir <- occ_download_import(download_vir) #import the download, which is actually a tsv and now csv as indicated...
+# write.csv(df_vir, file = './occ_data/raw/occ_vir.csv') # save the download file under a clean new name
+# file.remove(download_vir) # delete the old ugly-named GBIF file
 
 # V. tenellum download ----------------------------------------------------
 taxonKey <- 2882847
