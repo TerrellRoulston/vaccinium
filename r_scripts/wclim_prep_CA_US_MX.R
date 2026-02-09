@@ -180,12 +180,12 @@ out_dir <- "C:/Users/terre/Documents/R/vaccinium/wclim_data/wclim_CA_US_MX" # sp
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE) # create the dir and/or check it exists
 
 # Save
-saveRDS(wclim_CA_US_MX, './wclim_data/wclim_CA_US_MX/wclim_CA_US_MX.Rdata')
-saveRDS(ssp245_2030_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2030_CA_US_MX.Rdata')
-saveRDS(ssp245_2050_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2050_CA_US_MX.Rdata')
-saveRDS(ssp245_2070_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2070_CA_US_MX.Rdata')
-saveRDS(ssp585_2030_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2030_CA_US_MX.Rdata')
-saveRDS(ssp585_2050_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2050_CA_US_MX.Rdata')
-saveRDS(ssp585_2070_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2070_CA_US_MX.Rdata')
+saveRDS(wclim_CA_US_MX, './wclim_data/wclim_CA_US_MX/wclim_CA_US_MX.rds')
+saveRDS(ssp245_2030_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2030_CA_US_MX.rds')
+saveRDS(ssp245_2050_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2050_CA_US_MX.rds')
+saveRDS(ssp245_2070_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp245_2070_CA_US_MX.rds')
+saveRDS(ssp585_2030_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2030_CA_US_MX.rds')
+saveRDS(ssp585_2050_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2050_CA_US_MX.rds')
+saveRDS(ssp585_2070_CA_US_MX, './wclim_data/wclim_CA_US_MX/ssp585_2070_CA_US_MX.rds')
 
 

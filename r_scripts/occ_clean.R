@@ -99,7 +99,7 @@ occ_ang_clean <- occ_ang %>%
 points(occ_ang_clean$decimalLongitude, occ_ang_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ang_clean, file = "./occ_data/clean/occ_ang_clean.Rdata")
+saveRDS(occ_ang_clean, file = "./occ_data/clean/occ_ang_clean.rds")
 
 
 # V. arboreum cleaning ----------------------------------------------------
@@ -126,7 +126,7 @@ occ_arb_clean <- occ_arb %>%
 points(occ_arb_clean$decimalLongitude, occ_arb_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_arb_clean, file = "./occ_data/clean/occ_arb_clean.Rdata")
+saveRDS(occ_arb_clean, file = "./occ_data/clean/occ_arb_clean.rds")
 
 
 # V. boreale cleaning -----------------------------------------------------
@@ -149,7 +149,7 @@ occ_bor_clean <- occ_bor %>%
 points(occ_bor_clean$decimalLongitude, occ_bor_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_bor_clean, file = "./occ_data/clean/occ_bor_clean.Rdata")
+saveRDS(occ_bor_clean, file = "./occ_data/clean/occ_bor_clean.rds")
 
 
 # V. cespitosum cleaning --------------------------------------------------
@@ -174,7 +174,7 @@ occ_ces_clean <- occ_ces %>%
 points(occ_ces_clean$decimalLongitude, occ_ces_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ces_clean, file = "./occ_data/clean/occ_ces_clean.Rdata")
+saveRDS(occ_ces_clean, file = "./occ_data/clean/occ_ces_clean.rds")
 
 
 # V. corymbosum cleaning --------------------------------------------------
@@ -202,7 +202,7 @@ occ_cor_clean <- occ_cor %>%
 points(occ_cor_clean$decimalLongitude, occ_cor_clean$decimalLatitude, pch = 16,
      col = alpha("red", 0.2))
 
-saveRDS(occ_cor_clean, file = "./occ_data/clean/occ_cor_clean.Rdata")
+saveRDS(occ_cor_clean, file = "./occ_data/clean/occ_cor_clean.rds")
 
 
 # V. crassifolium cleaning ------------------------------------------------
@@ -229,7 +229,7 @@ occ_cra_clean <- occ_cra %>%
 points(occ_cra_clean$decimalLongitude, occ_cra_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_cra_clean, file = "./occ_data/clean/occ_cra_clean.Rdata")
+saveRDS(occ_cra_clean, file = "./occ_data/clean/occ_cra_clean.rds")
 
 
 # V. darrowii cleaning ----------------------------------------------------
@@ -254,7 +254,7 @@ occ_dar_clean <- occ_dar %>%
 points(occ_dar_clean$decimalLongitude, occ_dar_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_dar_clean, file = "./occ_data/clean/occ_dar_clean.Rdata")
+saveRDS(occ_dar_clean, file = "./occ_data/clean/occ_dar_clean.rds")
 
 
 # V. deliciosum cleaning --------------------------------------------------
@@ -279,7 +279,7 @@ occ_del_clean <- occ_del %>%
 points(occ_del_clean$decimalLongitude, occ_del_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_del_clean, file = "./occ_data/clean/occ_del_clean.Rdata")
+saveRDS(occ_del_clean, file = "./occ_data/clean/occ_del_clean.rds")
 
 
 # V. erythrocarpum cleaning -----------------------------------------------
@@ -305,7 +305,7 @@ occ_ery_clean <- occ_ery %>%
 points(occ_ery_clean$decimalLongitude, occ_ery_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ery_clean, file = "./occ_data/clean/occ_ery_clean.Rdata")
+saveRDS(occ_ery_clean, file = "./occ_data/clean/occ_ery_clean.rds")
 
 
 # V. hirsutum cleaning ----------------------------------------------------
@@ -331,7 +331,7 @@ occ_hir_clean <- occ_hir %>%
 points(occ_hir_clean$decimalLongitude, occ_hir_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_hir_clean, file = "./occ_data/clean/occ_hir_clean.Rdata")
+saveRDS(occ_hir_clean, file = "./occ_data/clean/occ_hir_clean.rds")
 
 
 # V. macrocarpon cleaning -------------------------------------------------
@@ -357,7 +357,7 @@ occ_mac_clean <- occ_mac %>%
 points(occ_mac_clean$decimalLongitude, occ_mac_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_mac_clean, file = "./occ_data/clean/occ_mac_clean.Rdata")
+saveRDS(occ_mac_clean, file = "./occ_data/clean/occ_mac_clean.rds")
 
 
 # V. membranaceum cleaning ------------------------------------------------
@@ -383,7 +383,7 @@ occ_mem_clean <- occ_mem %>%
 points(occ_mem_clean$decimalLongitude, occ_mem_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_mem_clean, file = "./occ_data/clean/occ_mem_clean.Rdata")
+saveRDS(occ_mem_clean, file = "./occ_data/clean/occ_mem_clean.rds")
 
 
 # V. myrtillus cleaning ---------------------------------------------------
@@ -410,7 +410,7 @@ occ_mtu_clean <- occ_mtu %>%
 points(occ_mtu_clean$decimalLongitude, occ_mtu_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_mtu_clean, file = "./occ_data/clean/occ_mtu_clean.Rdata")
+saveRDS(occ_mtu_clean, file = "./occ_data/clean/occ_mtu_clean.rds")
 
 
 # V. myrtilloides cleaning ------------------------------------------------
@@ -437,7 +437,7 @@ occ_myr_clean <- occ_myr %>%
 points(occ_myr_clean$decimalLongitude, occ_myr_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_myr_clean, file = "./occ_data/clean/occ_myr_clean.Rdata")
+saveRDS(occ_myr_clean, file = "./occ_data/clean/occ_myr_clean.rds")
 
 
 # V. myrsinites cleaning --------------------------------------------------
@@ -463,7 +463,7 @@ occ_mys_clean <- occ_mys %>%
 points(occ_mys_clean$decimalLongitude, occ_mys_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_mys_clean, file = "./occ_data/clean/occ_mys_clean.Rdata")
+saveRDS(occ_mys_clean, file = "./occ_data/clean/occ_mys_clean.rds")
 
 
 # V. ovalifolium cleaning -------------------------------------------------
@@ -487,7 +487,7 @@ occ_ova_clean <- occ_ova %>%
 points(occ_ova_clean$decimalLongitude, occ_ova_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ova_clean, file = "./occ_data/clean/occ_ova_clean.Rdata")
+saveRDS(occ_ova_clean, file = "./occ_data/clean/occ_ova_clean.rds")
 
 
 # V. ovatum cleaning ------------------------------------------------------
@@ -512,7 +512,7 @@ occ_ovt_clean <- occ_ovt %>%
 points(occ_ovt_clean$decimalLongitude, occ_ovt_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ovt_clean, file = "./occ_data/clean/occ_ovt_clean.Rdata")
+saveRDS(occ_ovt_clean, file = "./occ_data/clean/occ_ovt_clean.rds")
 
 
 # V. oxycoccos cleaning ---------------------------------------------------
@@ -536,7 +536,7 @@ occ_oxy_clean <- occ_oxy %>%
 points(occ_oxy_clean$decimalLongitude, occ_oxy_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_oxy_clean, file = "./occ_data/clean/occ_oxy_clean.Rdata")
+saveRDS(occ_oxy_clean, file = "./occ_data/clean/occ_oxy_clean.rds")
 
 
 
@@ -561,7 +561,7 @@ occ_pal_clean <- occ_pal %>%
 points(occ_pal_clean$decimalLongitude, occ_pal_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_pal_clean, file = "./occ_data/clean/occ_pal_clean.Rdata")
+saveRDS(occ_pal_clean, file = "./occ_data/clean/occ_pal_clean.rds")
 
 
 # V. parvifolium cleaning -------------------------------------------------
@@ -586,7 +586,7 @@ occ_par_clean <- occ_par %>%
 points(occ_par_clean$decimalLongitude, occ_par_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_par_clean, file = "./occ_data/clean/occ_par_clean.Rdata")
+saveRDS(occ_par_clean, file = "./occ_data/clean/occ_par_clean.rds")
 
 
 # V. scoparium cleaning ---------------------------------------------------
@@ -613,7 +613,7 @@ occ_sco_clean <- occ_sco %>%
 points(occ_sco_clean$decimalLongitude, occ_sco_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_sco_clean, file = "./occ_data/clean/occ_sco_clean.Rdata")
+saveRDS(occ_sco_clean, file = "./occ_data/clean/occ_sco_clean.rds")
 
 
 # V. stamineum cleaning ---------------------------------------------------
@@ -638,7 +638,7 @@ occ_sta_clean <- occ_sta %>%
 points(occ_sta_clean$decimalLongitude, occ_sta_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_sta_clean, file = "./occ_data/clean/occ_sta_clean.Rdata")
+saveRDS(occ_sta_clean, file = "./occ_data/clean/occ_sta_clean.rds")
 
 
 # V. tenellum cleaning ----------------------------------------------------
@@ -663,7 +663,7 @@ occ_ten_clean <- occ_ten %>%
 points(occ_ten_clean$decimalLongitude, occ_ten_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_ten_clean, file = "./occ_data/clean/occ_ten_clean.Rdata")
+saveRDS(occ_ten_clean, file = "./occ_data/clean/occ_ten_clean.rds")
 
 
 # V. uliginosum cleaning --------------------------------------------------
@@ -688,7 +688,7 @@ occ_uli_clean <- occ_uli %>%
 points(occ_uli_clean$decimalLongitude, occ_uli_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_uli_clean, file = "./occ_data/clean/occ_uli_clean.Rdata")
+saveRDS(occ_uli_clean, file = "./occ_data/clean/occ_uli_clean.rds")
 
 
 # V. vitis-idaea cleaning -------------------------------------------------
@@ -712,7 +712,7 @@ occ_vid_clean <- occ_vid %>%
 points(occ_vid_clean$decimalLongitude, occ_vid_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_vid_clean, file = "./occ_data/clean/occ_vid_clean.Rdata")
+saveRDS(occ_vid_clean, file = "./occ_data/clean/occ_vid_clean.rds")
 
 # V. shastense cleaning --------------------------------------------------
 occ_sha_clean <- occ_sha %>% 
@@ -733,7 +733,7 @@ occ_sha_clean <- occ_sha %>%
 points(occ_sha_clean$decimalLongitude, occ_sha_clean$decimalLatitude, pch = 16,
        col = alpha("red", 0.2))
 
-saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
+saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.rds")
 
 
 # NOTE: THESE ARE CENTRAL AMERICAN SPECIES THAT ARE NOW EXCLUDED FROM FUTHER ANALYSIS BECAUSE THEIR TAXONOMY IS MESSY
@@ -756,7 +756,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_leu_clean$decimalLongitude, occ_leu_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_leu_clean, file = "./occ_data/clean/occ_leu_clean.Rdata")
+# saveRDS(occ_leu_clean, file = "./occ_data/clean/occ_leu_clean.rds")
 # 
 # # V. confertum cleaning ---------------------------------------------------
 # occ_con_clean <- occ_con %>% 
@@ -778,7 +778,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_con_clean$decimalLongitude, occ_con_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_con_clean, file = "./occ_data/clean/occ_con_clean.Rdata")
+# saveRDS(occ_con_clean, file = "./occ_data/clean/occ_con_clean.rds")
 # 
 # # V. stenophyllum cleaning ------------------------------------------------
 # occ_ste_clean <- occ_ste %>% 
@@ -800,7 +800,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_ste_clean$decimalLongitude, occ_ste_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_ste_clean, file = "./occ_data/clean/occ_ste_clean.Rdata")
+# saveRDS(occ_ste_clean, file = "./occ_data/clean/occ_ste_clean.rds")
 # 
 # 
 # # V. geminiflorum cleaning ------------------------------------------------
@@ -822,7 +822,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_gem_clean$decimalLongitude, occ_gem_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_gem_clean, file = "./occ_data/clean/occ_gem_clean.Rdata")
+# saveRDS(occ_gem_clean, file = "./occ_data/clean/occ_gem_clean.rds")
 # 
 # # V. cordifolium cleaning -------------------------------------------------
 # occ_crd_clean <- occ_crd %>% 
@@ -843,7 +843,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_crd_clean$decimalLongitude, occ_crd_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_crd_clean, file = "./occ_data/clean/occ_crd_clean.Rdata")
+# saveRDS(occ_crd_clean, file = "./occ_data/clean/occ_crd_clean.rds")
 # 
 # # V. consanguineum cleaning -----------------------------------------------
 # occ_cos_clean <- occ_cos %>% 
@@ -865,7 +865,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_cos_clean$decimalLongitude, occ_cos_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_cos_clean, file = "./occ_data/clean/occ_cos_clean.Rdata")
+# saveRDS(occ_cos_clean, file = "./occ_data/clean/occ_cos_clean.rds")
 # 
 # # V. selerianum cleaning --------------------------------------------------
 # occ_sel_clean <- occ_sel %>% 
@@ -887,7 +887,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_sel_clean$decimalLongitude, occ_sel_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_sel_clean, file = "./occ_data/clean/occ_sel_clean.Rdata")
+# saveRDS(occ_sel_clean, file = "./occ_data/clean/occ_sel_clean.rds")
 # 
 # # V. kunthianum cleaning --------------------------------------------------
 # occ_kun_clean <- occ_kun %>% 
@@ -908,7 +908,7 @@ saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 # points(occ_kun_clean$decimalLongitude, occ_kun_clean$decimalLatitude, pch = 16,
 #        col = alpha("red", 0.2))
 # 
-# saveRDS(occ_kun_clean, file = "./occ_data/clean/occ_kun_clean.Rdata")
+# saveRDS(occ_kun_clean, file = "./occ_data/clean/occ_kun_clean.rds")
 
 # Plot all species together -----------------------------------------------
 # Append "_clean" to each name

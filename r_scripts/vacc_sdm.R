@@ -15,11 +15,11 @@ library(doParallel) # added functionality to parallel
 
 # Load background, occurrence and map data --------------------------------
 # Load bg SpatVectors
-ang_bg_vec <- readRDS(file = './bg_data/ang_bg_vec.Rdata')
+ang_bg_vec <- readRDS(file = './bg_data/ang_bg_vec.rds')
 
 # Load occurrence data 
-occ_angThin <- readRDS(file = './occ_data/thinned/occ_angThin.Rdata')
-occ_angPankajThin <- readRDS(file = './occ_data/thinned/occ_angPankajThin.Rdata')
+occ_angThin <- readRDS(file = './occ_data/thinned/occ_angThin.rds')
+occ_angPankajThin <- readRDS(file = './occ_data/thinned/occ_angPankajThin.rds')
 
 # Great Lakes shapefiles for making pretty maps and cropping
 great_lakes <- vect('C:/Users/terre/Documents/Acadia/Malus Project/maps/great lakes/combined great lakes/')
@@ -92,7 +92,7 @@ ssp585_2070 <- cmip6_world(model = "CanESM5",
   mask(great_lakes, inverse = T) # cut out the great lakes
 
 # Load cliped wclim data to ecoregions
-wclim_ang <- readRDS(file = './wclim_data/wclim_ang.Rdata') 
+wclim_ang <- readRDS(file = './wclim_data/wclim_ang.rds') 
 
 climate_predictors <- names(wclim_ang) # extract climate predictor names, to rename layers in the rasters below
 # This is important to do for making predictions once the SDMs have been made on future climate data
@@ -164,10 +164,10 @@ angPankaj_maxent <- ENMevaluate(occ_angPankaj_coords, # occurrence records
 
 
 # Save the MaxEnt model so you do not have to waste time re-running the model
-saveRDS(ang_maxent, file = './sdm_output/ang_maxent.Rdata') # save
-saveRDS(angPankaj_maxent, file = './sdm_output/angPankaj_maxent.Rdata') # save
+saveRDS(ang_maxent, file = './sdm_output/ang_maxent.rds') # save
+saveRDS(angPankaj_maxent, file = './sdm_output/angPankaj_maxent.rds') # save
 
-ang_maxent <- readRDS(file = './sdm_output/ang_maxent.Rdata')
+ang_maxent <- readRDS(file = './sdm_output/ang_maxent.rds')
 
 # V. angustifolium Model Selection ----------------------------------------
 # Model selection and variable importance
@@ -204,21 +204,21 @@ ang_pred_ssp585_50 <- terra::predict(ssp585_2050, mod.best_ang_maxent, cores = c
 ang_pred_ssp585_70 <- terra::predict(ssp585_2070, mod.best_ang_maxent, cores = cn - 1, na.rm = T)
 
 # Save predictions
-saveRDS(ang_pred_hist, file = './sdm_output/ang_pred_hist.Rdata')
-saveRDS(ang_pred_ssp245_30, file = './sdm_output/ang_pred_ssp245_30.Rdata')
-saveRDS(ang_pred_ssp245_50, file = './sdm_output/ang_pred_ssp245_50.Rdata')
-saveRDS(ang_pred_ssp245_70, file = './sdm_output/ang_pred_ssp245_70.Rdata')
-saveRDS(ang_pred_ssp585_30, file = './sdm_output/ang_pred_ssp585_30.Rdata')
-saveRDS(ang_pred_ssp585_50, file = './sdm_output/ang_pred_ssp585_50.Rdata')
-saveRDS(ang_pred_ssp585_70, file = './sdm_output/ang_pred_ssp585_70.Rdata')
+saveRDS(ang_pred_hist, file = './sdm_output/ang_pred_hist.rds')
+saveRDS(ang_pred_ssp245_30, file = './sdm_output/ang_pred_ssp245_30.rds')
+saveRDS(ang_pred_ssp245_50, file = './sdm_output/ang_pred_ssp245_50.rds')
+saveRDS(ang_pred_ssp245_70, file = './sdm_output/ang_pred_ssp245_70.rds')
+saveRDS(ang_pred_ssp585_30, file = './sdm_output/ang_pred_ssp585_30.rds')
+saveRDS(ang_pred_ssp585_50, file = './sdm_output/ang_pred_ssp585_50.rds')
+saveRDS(ang_pred_ssp585_70, file = './sdm_output/ang_pred_ssp585_70.rds')
 # Load predictions
-ang_pred_hist <- readRDS(file = './sdm_output/ang_pred_hist.Rdata')
-ang_pred_ssp245_30 <- readRDS(file = './sdm_output/ang_pred_ssp245_30.Rdata')
-ang_pred_ssp245_50 <- readRDS(file = './sdm_output/ang_pred_ssp245_50.Rdata')
-ang_pred_ssp245_70 <- readRDS(file = './sdm_output/ang_pred_ssp245_70.Rdata')
-ang_pred_ssp585_30 <- readRDS(file = './sdm_output/ang_pred_ssp585_30.Rdata')
-ang_pred_ssp585_50 <- readRDS(file = './sdm_output/ang_pred_ssp585_50.Rdata')
-ang_pred_ssp585_70 <- readRDS(file = './sdm_output/ang_pred_ssp585_70.Rdata')
+ang_pred_hist <- readRDS(file = './sdm_output/ang_pred_hist.rds')
+ang_pred_ssp245_30 <- readRDS(file = './sdm_output/ang_pred_ssp245_30.rds')
+ang_pred_ssp245_50 <- readRDS(file = './sdm_output/ang_pred_ssp245_50.rds')
+ang_pred_ssp245_70 <- readRDS(file = './sdm_output/ang_pred_ssp245_70.rds')
+ang_pred_ssp585_30 <- readRDS(file = './sdm_output/ang_pred_ssp585_30.rds')
+ang_pred_ssp585_50 <- readRDS(file = './sdm_output/ang_pred_ssp585_50.rds')
+ang_pred_ssp585_70 <- readRDS(file = './sdm_output/ang_pred_ssp585_70.rds')
 
 # With Pankaj's observations
 cn <- detectCores(logical = F) 
@@ -231,21 +231,21 @@ angPankaj_pred_ssp585_50 <- terra::predict(ssp585_2050, mod.best_angPankaj_maxen
 angPankaj_pred_ssp585_70 <- terra::predict(ssp585_2070, mod.best_angPankaj_maxent, cores = cn - 1, na.rm = T)
 
 # Save predictions
-saveRDS(angPankaj_pred_hist, file = './sdm_output/angPankaj_pred_hist.Rdata')
-saveRDS(angPankaj_pred_ssp245_30, file = './sdm_output/angPankaj_pred_ssp245_30.Rdata')
-saveRDS(angPankaj_pred_ssp245_50, file = './sdm_output/angPankaj_pred_ssp245_50.Rdata')
-saveRDS(angPankaj_pred_ssp245_70, file = './sdm_output/angPankaj_pred_ssp245_70.Rdata')
-saveRDS(angPankaj_pred_ssp585_30, file = './sdm_output/angPankaj_pred_ssp585_30.Rdata')
-saveRDS(angPankaj_pred_ssp585_50, file = './sdm_output/angPankaj_pred_ssp585_50.Rdata')
-saveRDS(angPankaj_pred_ssp585_70, file = './sdm_output/angPankaj_pred_ssp585_70.Rdata')
+saveRDS(angPankaj_pred_hist, file = './sdm_output/angPankaj_pred_hist.rds')
+saveRDS(angPankaj_pred_ssp245_30, file = './sdm_output/angPankaj_pred_ssp245_30.rds')
+saveRDS(angPankaj_pred_ssp245_50, file = './sdm_output/angPankaj_pred_ssp245_50.rds')
+saveRDS(angPankaj_pred_ssp245_70, file = './sdm_output/angPankaj_pred_ssp245_70.rds')
+saveRDS(angPankaj_pred_ssp585_30, file = './sdm_output/angPankaj_pred_ssp585_30.rds')
+saveRDS(angPankaj_pred_ssp585_50, file = './sdm_output/angPankaj_pred_ssp585_50.rds')
+saveRDS(angPankaj_pred_ssp585_70, file = './sdm_output/angPankaj_pred_ssp585_70.rds')
 # Load predictions
-angPankaj_pred_hist <- readRDS(file = './sdm_output/angPankaj_pred_hist.Rdata')
-angPankaj_pred_ssp245_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_30.Rdata')
-angPankaj_pred_ssp245_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_50.Rdata')
-angPankaj_pred_ssp245_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_70.Rdata')
-angPankaj_pred_ssp585_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_30.Rdata')
-angPankaj_pred_ssp585_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_50.Rdata')
-angPankaj_pred_ssp585_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_70.Rdata')
+angPankaj_pred_hist <- readRDS(file = './sdm_output/angPankaj_pred_hist.rds')
+angPankaj_pred_ssp245_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_30.rds')
+angPankaj_pred_ssp245_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_50.rds')
+angPankaj_pred_ssp245_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_70.rds')
+angPankaj_pred_ssp585_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_30.rds')
+angPankaj_pred_ssp585_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_50.rds')
+angPankaj_pred_ssp585_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_70.rds')
 
 # V. angustifolium Evaluation ---------------------------------------------
 # Evaluate predictions using Boyce Index
@@ -271,13 +271,13 @@ angPred_threshold_1 <- quantile(angPred_val, 0.01, na.rm = T) # Low suitability
 angPred_threshold_10 <- quantile(angPred_val, 0.1, na.rm = T) # Moderate suitability
 angPred_threshold_50 <- quantile(angPred_val, 0.5, na.rm = T) # High suitability
 # Save
-saveRDS(angPred_threshold_1, file = './sdm_output/thresholds/angPred_threshold_1.Rdata')
-saveRDS(angPred_threshold_10, file = './sdm_output/thresholds/angPred_threshold_10.Rdata')
-saveRDS(angPred_threshold_50, file = './sdm_output/thresholds/angPred_threshold_50.Rdata')
+saveRDS(angPred_threshold_1, file = './sdm_output/thresholds/angPred_threshold_1.rds')
+saveRDS(angPred_threshold_10, file = './sdm_output/thresholds/angPred_threshold_10.rds')
+saveRDS(angPred_threshold_50, file = './sdm_output/thresholds/angPred_threshold_50.rds')
 # Load
-angPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_1.Rdata')
-angPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_10.Rdata')
-angPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_50.Rdata')
+angPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_1.rds')
+angPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_10.rds')
+angPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_50.rds')
 
 #Pankaj models
 angPankajPred_val <- terra::extract(angPankaj_pred_hist, occ_angPankaj_coords)$lyr1
@@ -285,12 +285,12 @@ angPankajPred_threshold_1 <- quantile(angPankajPred_val, 0.01, na.rm = T) # Low 
 angPankajPred_threshold_10 <- quantile(angPankajPred_val, 0.1, na.rm = T) # Moderate suitability
 angPankajPred_threshold_50 <- quantile(angPankajPred_val, 0.5, na.rm = T) # High suitability
 # Save
-saveRDS(angPankajPred_threshold_1, file = './sdm_output/thresholds/angPankajPred_threshold_1.Rdata')
-saveRDS(angPankajPred_threshold_10, file = './sdm_output/thresholds/angPankajPred_threshold_10.Rdata')
-saveRDS(angPankajPred_threshold_50, file = './sdm_output/thresholds/angPankajPred_threshold_50.Rdata')
+saveRDS(angPankajPred_threshold_1, file = './sdm_output/thresholds/angPankajPred_threshold_1.rds')
+saveRDS(angPankajPred_threshold_10, file = './sdm_output/thresholds/angPankajPred_threshold_10.rds')
+saveRDS(angPankajPred_threshold_50, file = './sdm_output/thresholds/angPankajPred_threshold_50.rds')
 # Load
-angPankajPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_1.Rdata')
-angPankajPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_10.Rdata')
-angPankajPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_50.Rdata')
+angPankajPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_1.rds')
+angPankajPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_10.rds')
+angPankajPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_50.rds')
 
 

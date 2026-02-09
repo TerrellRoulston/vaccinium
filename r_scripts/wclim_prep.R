@@ -173,12 +173,12 @@ ssp585_2070_NA <- ssp585_2070 %>%
 names(ssp585_2070_NA) <- sel
 
 # Saved formatted Predictor Rasters ---------------------------------------
-saveRDS(wclim_NA, './wclim_data/wclim_NA/wclim_NA.Rdata')
-saveRDS(ssp245_2030_NA, './wclim_data/wclim_NA/ssp245_2030_NA.Rdata')
-saveRDS(ssp245_2050_NA, './wclim_data/wclim_NA/ssp245_2050_NA.Rdata')
-saveRDS(ssp245_2070_NA, './wclim_data/wclim_NA/ssp245_2070_NA.Rdata')
-saveRDS(ssp585_2030_NA, './wclim_data/wclim_NA/ssp585_2030_NA.Rdata')
-saveRDS(ssp585_2050_NA, './wclim_data/wclim_NA/ssp585_2050_NA.Rdata')
-saveRDS(ssp585_2070_NA, './wclim_data/wclim_NA/ssp585_2070_NA.Rdata')
+saveRDS(wclim_NA, './wclim_data/wclim_NA/wclim_NA.rds')
+saveRDS(ssp245_2030_NA, './wclim_data/wclim_NA/ssp245_2030_NA.rds')
+saveRDS(ssp245_2050_NA, './wclim_data/wclim_NA/ssp245_2050_NA.rds')
+saveRDS(ssp245_2070_NA, './wclim_data/wclim_NA/ssp245_2070_NA.rds')
+saveRDS(ssp585_2030_NA, './wclim_data/wclim_NA/ssp585_2030_NA.rds')
+saveRDS(ssp585_2050_NA, './wclim_data/wclim_NA/ssp585_2050_NA.rds')
+saveRDS(ssp585_2070_NA, './wclim_data/wclim_NA/ssp585_2070_NA.rds')
 
 

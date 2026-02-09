@@ -18,7 +18,7 @@ ecoNA <- vect(x = "maps/cec_eco/na_cec_eco_l2/NA_CEC_Eco_Level2.shp")
 ecoNA <- project(ecoNA, 'WGS84') # project ecoregion vector to same coords ref as basemap
 
 # Load Canada, US and Mexico cropped Worldcim raster
-wclim_CA_US_MX <- readRDS('./wclim_data/wclim_CA_US_MX/wclim_CA_US_MX.Rdata')
+wclim_CA_US_MX <- readRDS('./wclim_data/wclim_CA_US_MX/wclim_CA_US_MX.rds')
 
 
 # Load occurrence data for main Vaccinium ---------------------------------
@@ -35,7 +35,7 @@ file_path1 <- "C:/Users/terre/Documents/R/vaccinium/occ_data/thin/"
 
 # Read all Rdata and assign each to a variable with its corresponding name
 for (name in file_names1) {
-  assign(name, readRDS(file.path(file_path1, paste0(name, ".Rdata"))))
+  assign(name, readRDS(file.path(file_path1, paste0(name, ".rds"))))
 }
 
 # Load occurrence data for Corymbosum complex -----------------------------
@@ -48,7 +48,7 @@ file_path2 <- "C:/Users/terre/Documents/R/vaccinium/occ_data/thin/corym_sub"
 
 # Read all Rdata and assign each to a variable with its corresponding name
 for (name in file_names2) {
-  assign(name, readRDS(file.path(file_path2, paste0(name, ".Rdata"))))
+  assign(name, readRDS(file.path(file_path2, paste0(name, ".rds"))))
 }
 
 
@@ -115,7 +115,7 @@ eco_vect_list2 <- lapply(ecoregion_list2, `[[`, 'eco_subset') # Corymbosum compl
 # ECOREGION CODES
 # Function for saving vector of ecoregion codes for each species from list above
 save_eco_code <- function(x, name, out_dir) {
-  fname <- file.path(out_dir, paste("eco_", name, "_code.Rdata"))
+  fname <- file.path(out_dir, paste("eco_", name, "_code.rds"))
   saveRDS(x, fname)
   fname
 } 

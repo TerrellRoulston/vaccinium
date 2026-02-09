@@ -30,7 +30,7 @@ file_path <- "C:/Users/terre/Documents/R/vaccinium/occ_data/clean/corym_sub"
 
 # Read all Rdata and assign each to a variable with its corresponding name
 for (name in file_names) {
-  assign(name, readRDS(file.path(file_path, paste0(name, ".Rdata"))))
+  assign(name, readRDS(file.path(file_path, paste0(name, ".rds"))))
 }
 
 # Vectorize the cleaned occurrences ---------------------------------------
@@ -71,7 +71,7 @@ occ_thin_list <- lapply(
 
 # function for saving thinned occurence spatvectors within the thinned occurrence list
 save_thin_Rdata <- function(x, name, out_dir) {
-  fname <- file.path(out_dir, paste0("occ_", name, "_thin.Rdata"))
+  fname <- file.path(out_dir, paste0("occ_", name, "_thin.rds"))
   saveRDS(x, fname)
   fname
 }

@@ -89,7 +89,7 @@ ssp585_2070 <- cmip6_world(model = "CanESM5",
   mask(great_lakes, inverse = T) # cut out the great lakes
 
 # Load cliped wclim data to ecoregions
-wclim_ang <- readRDS(file = './wclim_data/clipped_wclim/wclim_ang.Rdata') 
+wclim_ang <- readRDS(file = './wclim_data/clipped_wclim/wclim_ang.rds') 
 
 climate_predictors <- names(wclim_ang) # extract climate predictor names, to rename layers in the rasters below
 # This is important to do for making predictions once the SDMs have been made on future climate data
@@ -108,12 +108,12 @@ names(ssp585_2050) <- climate_predictors
 names(ssp585_2070) <- climate_predictors
 
 # Saved formatted Predictor Rasters ---------------------------------------
-saveRDS(wclim, './wclim_data/wclim_NA/wclim.Rdata')
-saveRDS(ssp245_2030, './wclim_data/wclim_NA/ssp245_2030.Rdata')
-saveRDS(ssp245_2050, './wclim_data/wclim_NA/ssp245_2050.Rdata')
-saveRDS(ssp245_2070, './wclim_data/wclim_NA/ssp245_2070.Rdata')
-saveRDS(ssp585_2030, './wclim_data/wclim_NA/ssp585_2030.Rdata')
-saveRDS(ssp585_2050, './wclim_data/wclim_NA/ssp585_2050.Rdata')
-saveRDS(ssp585_2070, './wclim_data/wclim_NA/ssp585_2070.Rdata')
+saveRDS(wclim, './wclim_data/wclim_NA/wclim.rds')
+saveRDS(ssp245_2030, './wclim_data/wclim_NA/ssp245_2030.rds')
+saveRDS(ssp245_2050, './wclim_data/wclim_NA/ssp245_2050.rds')
+saveRDS(ssp245_2070, './wclim_data/wclim_NA/ssp245_2070.rds')
+saveRDS(ssp585_2030, './wclim_data/wclim_NA/ssp585_2030.rds')
+saveRDS(ssp585_2050, './wclim_data/wclim_NA/ssp585_2050.rds')
+saveRDS(ssp585_2070, './wclim_data/wclim_NA/ssp585_2070.rds')
 
 

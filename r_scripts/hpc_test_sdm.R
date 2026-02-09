@@ -15,11 +15,11 @@ library(doParallel) # added functionality to parallel
 
 # Load background, occurrence and map data --------------------------------
 # Load bg SpatVectors
-ang_bg_vec <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/ang_bg_vec.Rdata')
+ang_bg_vec <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/ang_bg_vec.rds')
 # Load occurrence data 
-occ_angThin <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/occ_angThin.Rdata')
+occ_angThin <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/occ_angThin.rds')
 # Load cliped wclim data to ecoregions
-wclim_ang <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/wclim_ang.Rdata')
+wclim_ang <- readRDS(file = '/project/6074193/mig_lab/vac_sdm/wclim_ang.rds')
 
 # Spatial partitioning prep -----------------------------------------------
 # V. angustifolium
@@ -41,5 +41,5 @@ ang_maxent <- ENMevaluate(occ_ang_coords, # occurrence records
                           parallelType = "doSNOW", # use doParrallel on Windows - socket cluster  
                           algorithm = 'maxent.jar')
 
-saveRDS(ang_maxent, file = '/project/6074193/mig_lab/vac_sdm/sdm_output/ang_maxent.Rdata') # save
+saveRDS(ang_maxent, file = '/project/6074193/mig_lab/vac_sdm/sdm_output/ang_maxent.rds') # save
 

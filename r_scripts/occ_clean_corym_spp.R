@@ -69,7 +69,7 @@ occ_ash_clean <- occ_ash %>%
 # points(occ_ash_clean$decimalLongitude, occ_ash_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_ash_clean, file = "./occ_data/clean/corym_sub/occ_ash_clean.Rdata")
+saveRDS(occ_ash_clean, file = "./occ_data/clean/corym_sub/occ_ash_clean.rds")
 
 # Vaccinium caesariense clean ---------------------------------------------
 # All these occurrences look clean!
@@ -91,7 +91,7 @@ occ_cae_clean <- occ_cae %>%
 # points(occ_cae_clean$decimalLongitude, occ_cae_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_cae_clean, file = "./occ_data/clean/corym_sub/occ_cae_clean.Rdata")
+saveRDS(occ_cae_clean, file = "./occ_data/clean/corym_sub/occ_cae_clean.rds")
 
 # Vaccinium corymbosum clean ----------------------------------------------
 occ_cor2_clean <- occ_cor2 %>% 
@@ -116,7 +116,7 @@ occ_cor2_clean <- occ_cor2 %>%
 # points(occ_cor2_clean$decimalLongitude, occ_cor2_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_cor2_clean, file = "./occ_data/clean/corym_sub/occ_cor2_clean.Rdata")
+saveRDS(occ_cor2_clean, file = "./occ_data/clean/corym_sub/occ_cor2_clean.rds")
 
 # Vaccinium constablaei clean ---------------------------------------------
 # All these occurrences look clean!
@@ -138,7 +138,7 @@ occ_cot_clean <- occ_cot %>%
 # points(occ_cot_clean$decimalLongitude, occ_cot_clean$decimalLatitude, pch = 16,  col = alpha("red", 0.2))
       
 
-saveRDS(occ_cot_clean, file = "./occ_data/clean/corym_sub/occ_cot_clean.Rdata")
+saveRDS(occ_cot_clean, file = "./occ_data/clean/corym_sub/occ_cot_clean.rds")
 
 # Vaccinium elliottii clean -----------------------------------------------
 occ_ell_clean <- occ_ell %>% 
@@ -160,7 +160,7 @@ occ_ell_clean <- occ_ell %>%
 # points(occ_ell_clean$decimalLongitude, occ_ell_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_ell_clean, file = "./occ_data/clean/corym_sub/occ_ell_clean.Rdata")
+saveRDS(occ_ell_clean, file = "./occ_data/clean/corym_sub/occ_ell_clean.rds")
 
 # Vaccinium formosum clean ------------------------------------------------
 occ_for_clean <- occ_for %>% 
@@ -181,7 +181,7 @@ occ_for_clean <- occ_for %>%
 # points(occ_for_clean$decimalLongitude, occ_for_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_for_clean, file = "./occ_data/clean/corym_sub/occ_for_clean.Rdata")
+saveRDS(occ_for_clean, file = "./occ_data/clean/corym_sub/occ_for_clean.rds")
 
 # Vaccinium fuscatum clean ------------------------------------------------
 occ_fus_clean <- occ_fus %>% 
@@ -202,7 +202,7 @@ occ_fus_clean <- occ_fus %>%
 # points(occ_fus_clean$decimalLongitude, occ_fus_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_fus_clean, file = "./occ_data/clean/corym_sub/occ_fus_clean.Rdata")
+saveRDS(occ_fus_clean, file = "./occ_data/clean/corym_sub/occ_fus_clean.rds")
 
 # Vaccinium simulatum clean -----------------------------------------------
 occ_sim_clean <- occ_sim %>% 
@@ -224,7 +224,7 @@ occ_sim_clean <- occ_sim %>%
 # points(occ_sim_clean$decimalLongitude, occ_sim_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
      
 
-saveRDS(occ_sim_clean, file = "./occ_data/clean/corym_sub/occ_sim_clean.Rdata")
+saveRDS(occ_sim_clean, file = "./occ_data/clean/corym_sub/occ_sim_clean.rds")
 
 # Vaccinium virgatum clean ------------------------------------------------
 occ_vir_clean <- occ_vir %>% 
@@ -246,6 +246,6 @@ occ_vir_clean <- occ_vir %>%
 # points(occ_vir_clean$decimalLongitude, occ_vir_clean$decimalLatitude, pch = 16, col = alpha("red", 0.2))
        
 
-saveRDS(occ_vir_clean, file = "./occ_data/clean/corym_sub/occ_vir_clean.Rdata")
+saveRDS(occ_vir_clean, file = "./occ_data/clean/corym_sub/occ_vir_clean.rds")
 
 

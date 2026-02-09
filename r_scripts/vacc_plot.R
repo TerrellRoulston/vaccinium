@@ -8,8 +8,8 @@ library(terra) # Spatial Data package
 
 
 # Load occurence data and maps --------------------------------------------
-occ_angThin <- readRDS(file = './occ_data/thinned/occ_angThin.Rdata') # V. angustifolium
-occ_angPankajThin <- readRDS(file = './occ_data/thinned/occ_angPankajThin.Rdata')
+occ_angThin <- readRDS(file = './occ_data/thinned/occ_angThin.rds') # V. angustifolium
+occ_angPankajThin <- readRDS(file = './occ_data/thinned/occ_angPankajThin.rds')
 
 # Great Lakes shapefiles for making pretty maps
 # Shape files downloaded from the USGS (https://www.sciencebase.gov/catalog/item/530f8a0ee4b0e7e46bd300dd)
@@ -28,31 +28,31 @@ can_us_border <- can_us_border[!can_us_border$SectionEng %in% segments_to_remove
 # Load habitat predictions and thresholds ---------------------------------
 # V. angustifolium
 # Predictions
-ang_pred_hist <- readRDS(file = './sdm_output/ang_pred_hist.Rdata')
-ang_pred_ssp245_30 <- readRDS(file = './sdm_output/ang_pred_ssp245_30.Rdata')
-ang_pred_ssp245_50 <- readRDS(file = './sdm_output/ang_pred_ssp245_50.Rdata')
-ang_pred_ssp245_70 <- readRDS(file = './sdm_output/ang_pred_ssp245_70.Rdata')
-ang_pred_ssp585_30 <- readRDS(file = './sdm_output/ang_pred_ssp585_30.Rdata')
-ang_pred_ssp585_50 <- readRDS(file = './sdm_output/ang_pred_ssp585_50.Rdata')
-ang_pred_ssp585_70 <- readRDS(file = './sdm_output/ang_pred_ssp585_70.Rdata')
+ang_pred_hist <- readRDS(file = './sdm_output/ang_pred_hist.rds')
+ang_pred_ssp245_30 <- readRDS(file = './sdm_output/ang_pred_ssp245_30.rds')
+ang_pred_ssp245_50 <- readRDS(file = './sdm_output/ang_pred_ssp245_50.rds')
+ang_pred_ssp245_70 <- readRDS(file = './sdm_output/ang_pred_ssp245_70.rds')
+ang_pred_ssp585_30 <- readRDS(file = './sdm_output/ang_pred_ssp585_30.rds')
+ang_pred_ssp585_50 <- readRDS(file = './sdm_output/ang_pred_ssp585_50.rds')
+ang_pred_ssp585_70 <- readRDS(file = './sdm_output/ang_pred_ssp585_70.rds')
 # Thresholds
-angPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_1.Rdata')
-angPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_10.Rdata')
-angPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_50.Rdata')
+angPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_1.rds')
+angPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_10.rds')
+angPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPred_threshold_50.rds')
 
 # V. angustifolium with Pankaj
 # Predictions
-angPankaj_pred_hist <- readRDS(file = './sdm_output/angPankaj_pred_hist.Rdata')
-angPankaj_pred_ssp245_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_30.Rdata')
-angPankaj_pred_ssp245_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_50.Rdata')
-angPankaj_pred_ssp245_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_70.Rdata')
-angPankaj_pred_ssp585_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_30.Rdata')
-angPankaj_pred_ssp585_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_50.Rdata')
-angPankaj_pred_ssp585_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_70.Rdata')
+angPankaj_pred_hist <- readRDS(file = './sdm_output/angPankaj_pred_hist.rds')
+angPankaj_pred_ssp245_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_30.rds')
+angPankaj_pred_ssp245_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_50.rds')
+angPankaj_pred_ssp245_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp245_70.rds')
+angPankaj_pred_ssp585_30 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_30.rds')
+angPankaj_pred_ssp585_50 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_50.rds')
+angPankaj_pred_ssp585_70 <- readRDS(file = './sdm_output/angPankaj_pred_ssp585_70.rds')
 # Thresholds
-angPankajPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_1.Rdata')
-angPankajPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_10.Rdata')
-angPankajPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_50.Rdata')
+angPankajPred_threshold_1 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_1.rds')
+angPankajPred_threshold_10 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_10.rds')
+angPankajPred_threshold_50 <- readRDS(file = './sdm_output/thresholds/angPankajPred_threshold_50.rds')
 
 
 # Project to Lambert Conformal Conic --------------------------------------
