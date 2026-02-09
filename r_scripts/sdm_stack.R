@@ -16,16 +16,16 @@ library(terra)
 
 # Import suitability rasters ----------------------------------------------
 sp_codes <- c(
-  "ang", "cor", "myr", "pal", "hir", "dar", "vir", "ten", "mys", "bor",
-  "mac", "oxy", "ces", "mem", "del", "mtu", "par", "ova", "sco", "uli",
-  "sta", "arb", "cra", "ery", "vid"
+  "ang", "arb", "bor", "ces", "cor", "cra", "dar", "del", "ery",
+  "gem", "hir", "mac", "mem", "mtu", "mys", "myr", "ova", "ovt",
+  "oxy", "pal", "par", "sco", "sha", "sta", "ten", "uli", "vid"
 )
 
 # make a file path to read each species as its code
 pred_files <- file.path(
-  "sdm_output", "sdm_results",
+  "sdm_output", "sdm_results", "sdm_output_dec_10_2025", "masked",
   sp_codes,
-  paste0(sp_codes, "_pred_hist.RDS")
+  paste0(sp_codes, "_pred_hist_masked.RDS")
 )
 names(pred_files) <- sp_codes  # so we can keep track
 
@@ -65,7 +65,7 @@ rich_zero_na <- ifel(richness_mean < 1e-6, NA, richness_mean)
 
 pal <- hcl.colors(10, "Viridis")
 
-png(file = "./visualizations/vaccinium_richness_hist.png", width = 1600, height = 2000, res = 300)
+png(file = "./visualizations/vaccinium_richness_hist_NEW_JAN_29_2026_Cropped.png", width = 1600, height = 2000, res = 300)
 
 plot(rich_zero_na,
      col = pal,

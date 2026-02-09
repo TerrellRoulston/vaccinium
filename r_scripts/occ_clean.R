@@ -1,5 +1,5 @@
 # Top ---------------------------------------------------------------------
-# cleaninbg=g occurrence data of Vaccinium
+# cleaning occurrence data of Vaccinium
 # Terrell Roulston
 # Started Nov 6, 2024
 
@@ -714,96 +714,6 @@ points(occ_vid_clean$decimalLongitude, occ_vid_clean$decimalLatitude, pch = 16,
 
 saveRDS(occ_vid_clean, file = "./occ_data/clean/occ_vid_clean.Rdata")
 
-
-# V. virgatum cleaning ----------------------------------------------------
-#View(occ_vir)
-
-occ_vir_clean <- occ_vir %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  filter(!decimalLatitude > 38) %>% 
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(occ_vir_clean$decimalLongitude, occ_vir_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_vir_clean, file = "./occ_data/clean/occ_vir_clean.Rdata")
-
-# V. leucanthum cleaning --------------------------------------------------
-occ_leu_clean <- occ_leu %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
-
-# Plot occurrences
-points(occ_leu_clean$decimalLongitude, occ_leu_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_leu_clean, file = "./occ_data/clean/occ_leu_clean.Rdata")
-
-# V. confertum cleaning ---------------------------------------------------
-occ_con_clean <- occ_con %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(!decimalLatitude < 10) %>% # drop record in Panama
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(occ_con_clean$decimalLongitude, occ_con_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_con_clean, file = "./occ_data/clean/occ_con_clean.Rdata")
-
-# V. stenophyllum cleaning ------------------------------------------------
-occ_ste_clean <- occ_ste %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(!decimalLatitude > 30) %>% # drop records north of mexico (northeast US and Quebec?)
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(occ_ste_clean$decimalLongitude, occ_ste_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_ste_clean, file = "./occ_data/clean/occ_ste_clean.Rdata")
-
 # V. shastense cleaning --------------------------------------------------
 occ_sha_clean <- occ_sha %>% 
   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
@@ -825,139 +735,207 @@ points(occ_sha_clean$decimalLongitude, occ_sha_clean$decimalLatitude, pch = 16,
 
 saveRDS(occ_sha_clean, file = "./occ_data/clean/occ_sha_clean.Rdata")
 
-# V. geminiflorum cleaning ------------------------------------------------
-occ_gem_clean <- occ_gem %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
 
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(occ_gem_clean$decimalLongitude, occ_gem_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_gem_clean, file = "./occ_data/clean/occ_gem_clean.Rdata")
-
-# V. cordifolium cleaning -------------------------------------------------
-occ_crd_clean <- occ_crd %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
-
-# Plot occurrences
-points(occ_crd_clean$decimalLongitude, occ_crd_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_crd_clean, file = "./occ_data/clean/occ_crd_clean.Rdata")
-
-# V. consanguineum cleaning -----------------------------------------------
-occ_cos_clean <- occ_cos %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(!decimalLatitude > 18) %>% # drop records north of mexico (northeast US and Quebec?)
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50), ylim = c(30, 0))
-
-# Plot occurrences
-points(occ_cos_clean$decimalLongitude, occ_cos_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_cos_clean, file = "./occ_data/clean/occ_cos_clean.Rdata")
-
-# V. selerianum cleaning --------------------------------------------------
-occ_sel_clean <- occ_sel %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(!decimalLatitude > 20) %>% # drop disjunct records in central mexico
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
-
-# Plot occurrences
-points(occ_sel_clean$decimalLongitude, occ_sel_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_sel_clean, file = "./occ_data/clean/occ_sel_clean.Rdata")
-
-# V. kunthianum cleaning --------------------------------------------------
-occ_kun_clean <- occ_kun %>% 
-  filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
-  select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
-  filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
-  filter(decimalLongitude != 0) %>% 
-  filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
-  cc_cen(buffer = 2000) %>%
-  cc_inst(buffer = 200) %>%
-  cc_sea() %>% 
-  distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(occ_kun_clean$decimalLongitude, occ_kun_clean$decimalLatitude, pch = 16,
-       col = alpha("red", 0.2))
-
-saveRDS(occ_kun_clean, file = "./occ_data/clean/occ_kun_clean.Rdata")
+# NOTE: THESE ARE CENTRAL AMERICAN SPECIES THAT ARE NOW EXCLUDED FROM FUTHER ANALYSIS BECAUSE THEIR TAXONOMY IS MESSY
+# # V. leucanthum cleaning --------------------------------------------------
+# occ_leu_clean <- occ_leu %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
+# 
+# # Plot occurrences
+# points(occ_leu_clean$decimalLongitude, occ_leu_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_leu_clean, file = "./occ_data/clean/occ_leu_clean.Rdata")
+# 
+# # V. confertum cleaning ---------------------------------------------------
+# occ_con_clean <- occ_con %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(!decimalLatitude < 10) %>% # drop record in Panama
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50))
+# 
+# # Plot occurrences
+# points(occ_con_clean$decimalLongitude, occ_con_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_con_clean, file = "./occ_data/clean/occ_con_clean.Rdata")
+# 
+# # V. stenophyllum cleaning ------------------------------------------------
+# occ_ste_clean <- occ_ste %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(!decimalLatitude > 30) %>% # drop records north of mexico (northeast US and Quebec?)
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50))
+# 
+# # Plot occurrences
+# points(occ_ste_clean$decimalLongitude, occ_ste_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_ste_clean, file = "./occ_data/clean/occ_ste_clean.Rdata")
+# 
+# 
+# # V. geminiflorum cleaning ------------------------------------------------
+# occ_gem_clean <- occ_gem %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50))
+# 
+# # Plot occurrences
+# points(occ_gem_clean$decimalLongitude, occ_gem_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_gem_clean, file = "./occ_data/clean/occ_gem_clean.Rdata")
+# 
+# # V. cordifolium cleaning -------------------------------------------------
+# occ_crd_clean <- occ_crd %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
+# 
+# # Plot occurrences
+# points(occ_crd_clean$decimalLongitude, occ_crd_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_crd_clean, file = "./occ_data/clean/occ_crd_clean.Rdata")
+# 
+# # V. consanguineum cleaning -----------------------------------------------
+# occ_cos_clean <- occ_cos %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(!decimalLatitude > 18) %>% # drop records north of mexico (northeast US and Quebec?)
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50), ylim = c(30, 0))
+# 
+# # Plot occurrences
+# points(occ_cos_clean$decimalLongitude, occ_cos_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_cos_clean, file = "./occ_data/clean/occ_cos_clean.Rdata")
+# 
+# # V. selerianum cleaning --------------------------------------------------
+# occ_sel_clean <- occ_sel %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(!decimalLatitude > 20) %>% # drop disjunct records in central mexico
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50), ylim = c(10, 25))
+# 
+# # Plot occurrences
+# points(occ_sel_clean$decimalLongitude, occ_sel_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_sel_clean, file = "./occ_data/clean/occ_sel_clean.Rdata")
+# 
+# # V. kunthianum cleaning --------------------------------------------------
+# occ_kun_clean <- occ_kun %>% 
+#   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
+#   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
+#   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
+#   filter(decimalLongitude != 0) %>% 
+#   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
+#   cc_cen(buffer = 2000) %>%
+#   cc_inst(buffer = 200) %>%
+#   cc_sea() %>% 
+#   distinct(decimalLatitude, decimalLongitude, gbifID, .keep_all = T) 
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50))
+# 
+# # Plot occurrences
+# points(occ_kun_clean$decimalLongitude, occ_kun_clean$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.2))
+# 
+# saveRDS(occ_kun_clean, file = "./occ_data/clean/occ_kun_clean.Rdata")
 
 # Plot all species together -----------------------------------------------
 # Append "_clean" to each name
-file_names_clean <- list(
-  occ_ang_clean, occ_arb_clean, occ_bor_clean, occ_ces_clean, occ_cor_clean, 
-  occ_cra_clean, occ_dar_clean, occ_del_clean, occ_ery_clean, occ_hir_clean, 
-  occ_mac_clean, occ_mem_clean, occ_mtu_clean, occ_myr_clean, occ_mys_clean, 
-  occ_ova_clean, occ_ovt_clean, occ_pal_clean, occ_par_clean, occ_sco_clean, 
-  occ_sta_clean, occ_ten_clean, occ_uli_clean, occ_vid_clean, occ_vir_clean
-)
-
-file_names_clean <- lapply(file_names_clean, function(df) {
-  colnames(df) <- c("species", "countryCode", "decimalLatitude", 
-                    "decimalLongitude", "coordinateUncertaintyInMeters", 
-                    "year", "basisOfRecord", "gbifID")
-  return(df)
-})
-
-# Combine all into a single data frame
-result <- do.call(rbind, file_names_clean)
-
-# #View the combined result
-#result
-
-# Plot basemap  
-#plot(all_countries_map, xlim = c(-180, -50))
-
-# Plot occurrences
-points(result$decimalLongitude, result$decimalLatitude, pch = 16,
-       col = alpha("red", 0.1))
+# file_names_clean <- list(
+#   occ_ang_clean, occ_arb_clean, occ_bor_clean, occ_ces_clean, occ_cor_clean, 
+#   occ_cra_clean, occ_dar_clean, occ_del_clean, occ_ery_clean, occ_hir_clean, 
+#   occ_mac_clean, occ_mem_clean, occ_mtu_clean, occ_myr_clean, occ_mys_clean, 
+#   occ_ova_clean, occ_ovt_clean, occ_pal_clean, occ_par_clean, occ_sco_clean, 
+#   occ_sta_clean, occ_ten_clean, occ_uli_clean, occ_vid_clean, occ_sha_clean
+# )
+# 
+# file_names_clean <- lapply(file_names_clean, function(df) {
+#   colnames(df) <- c("species", "countryCode", "decimalLatitude", 
+#                     "decimalLongitude", "coordinateUncertaintyInMeters", 
+#                     "year", "basisOfRecord", "gbifID")
+#   return(df)
+# })
+# 
+# # Combine all into a single data frame
+# result <- do.call(rbind, file_names_clean)
+# 
+# # #View the combined result
+# #result
+# 
+# # Plot basemap  
+# #plot(all_countries_map, xlim = c(-180, -50))
+# 
+# # Plot occurrences
+# points(result$decimalLongitude, result$decimalLatitude, pch = 16,
+#        col = alpha("red", 0.1))

@@ -1,34 +1,48 @@
-ang – angustifolium
-arb – arboreum
-bor – boreale
-ces – cespitosum
-con – confertum
-cor – corymbosum
-cos – consanguineum
-cra – crassifolium
-crd – cordifolium
-dar – darrowii
-del – deliciosum
-ery – erythrocarpum
-gem – geminiflorum
-hir – hirsutum
-kun – kunthianum
-leu – leucanthum
-mac – macrocarpon
-mem – membranaceum
-mtu – myrtillus
-myr – myrtilloides
-mys – myrsinites
-ova – ovalifolium
-ovt – ovatum
-oxy – oxycoccos
-pal – pallidum
-par – parvifolium
-sco – scoparium
-sel – selerianum
-sha – shastense
-sta – stamineum
-ste – stenophyllum
-ten – tenellum
-uli – uliginosum
-vid – vitis-idaea
+CANADA/UNITED STATES
+ang – Vaccinium angustifolium
+arb – Vaccinium arboreum
+bor – Vaccinium boreale
+ces – Vaccinium cespitosum
+cor – Vaccinium corymbosum (syn. Vaccinium corymbodendron, Vaccinium caesariense)
+cra – Vaccinium crassifolium
+dar – Vaccinium darrowii
+del – Vaccinium deliciosum
+ery – Vaccinium erythrocarpum
+gem – Vaccinium geminiflorum
+hir – Vaccinium hirsutum
+mac – Vaccinium macrocarpon
+mem – Vaccinium membranaceum (syn. Vaccinium membranaceum Douglas ex Hook.)
+mtu – Vaccinium myrtillus
+myr – Vaccinium myrtilloides
+mys – Vaccinium myrsinites
+ova – Vaccinium ovalifolium
+ovt – Vaccinium ovatum
+oxy – Vaccinium oxycoccos (syn. Vaccinium microcarpum)
+pal – Vaccinium pallidum (syn. Vaccinium vacillans)
+par – Vaccinium parvifolium
+sco – Vaccinium scoparium
+sha – Vaccinium shastense
+sta – Vaccinium stamineum
+ten – Vaccinium tenellum
+uli – Vaccinium uliginosum (syn. Vaccinium gaultheriodes)
+vid – Vaccinium vitis-idaea
+
+VACCINIUM CORYMBOSUM SUBSPECIES
+# ash – Vaccinium ashei
+# cae – Vaccinium caesariense
+# cor2 – Vaccinium corymbosum
+# cot – Vaccinium constablaei
+# ell – Vaccinium elliottii
+# for – Vaccinium formosum (syn. Vaccinium australe)
+# fus – Vaccinium fuscatum (syn. Vaccinium arkansanum, Vaccinium atrococcum)
+# sim – Vaccinium simulatum
+# vir – Vaccinium virgatum (syn. Vaccinium amoenum)
+
+MEXICAN/CENTRAL AMERICA
+con – Vaccinium confertum
+cos – Vaccinium consanguineum
+crd – Vaccinium cordifolium
+kun – Vaccinium kunthianum
+leu – Vaccinium leucanthum
+sel – Vaccinium selerianum
+ste – Vaccinium stenophyllum

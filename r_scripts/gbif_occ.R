@@ -3,138 +3,9 @@
 library(tidyverse) # data management, grammar
 library(rgbif) # access GBIF data
 
-
-## The following is needed only the first time the data is downloaded from GBIF. 
-## Make sure to save the created object
-
-
-# FUNCTIONS ------------------------------------------------------
-# This is functionality added by Thomas to speed up GBIF downloads.
-# I personally think although not as sexy its better to keep them seperate because this creates a list of dataframes and I rather objects remain seperate (because lists of objects hurt my brain)
-# I keep his functions here as future functionality that could be implemented in the pipeline.
-
-#In general, this series of functions will build up to do the following
-#Take a dataframe of taxons and associated keys
-#Download their data from gbiff, put that data in named sub directories and create a 4xn dataframe with it all
-
-#The first 4 fctns act as building blocks for comprehensive download and file mgmt
-
-#The 5th calls these building blocks and creates a list with all important data for one species
-
-#The 6th then maps this to every species in a dataframe
-
-
-
-#Create a new sub directory
-#Return relative path to that subDir
-# create_and_return_path <- function(newSubDir) {
-#   
-#   dir.create(file.path('./occ_data', newSubDir)) #file.path() allows you to specify relative paths no matter OS
-#   
-#   paste0('./occ_data/', newSubDir) %>% 
-#     return()
-# }
-# 
-# 
-# #Send a request to download data of specified taxon
-# #Return a unique code associated with that download request
-# request_gbif_occ_download <- function(taxonKey, basisOfRecord, countryCodes) {
-#   
-#   occ_download(
-#     pred("taxonKey", taxonKey),
-#     pred_in("basisOfRecord", basisOfRecord),
-#     pred("hasCoordinate", TRUE),
-#     pred_in("country", countryCodes),
-#     format = "SIMPLE_CSV", #I noticed you downloaded as DWCA in this analysis, adjust as needed
-#     user = gbif_credentials$user, 
-#     pwd = gbif_credentials$pwd, 
-#     email = gbif_credentials$email
-#   ) 
-#   #returns: downCode
-# }
-# 
-# 
-# #Take unique downCode and a directory, then, after waiting for prep, download then extract all files to that dir
-# wait_execute_extract_gbif_occ_download <- function(downCode, newDir) {
-#   
-#   occ_download_wait(downCode[1]) 
-#   
-#   occ_download_get(downCode[1], path = newDir, overwrite = TRUE) %>% 
-#     occ_download_import(downCode[1], path = newDir)
-#   #returns: tibble of occ data
-# }
-# 
-# 
-# #Call all above functions
-# #Create a relative path, request a download, then execute that download
-# comprehensive_gbif_occ_download <- function(taxonKey, epithet, basisOfRecord, countryCodes) {
-#   
-#   newDirPath <- create_and_return_path(epithet)
-#   
-#   downCode <- taxonKey %>% 
-#     request_gbif_occ_download(basisOfRecord, countryCodes)
-#   
-#   occDf <-   
-#     wait_execute_extract_gbif_occ_download(downCode, newDirPath)
-#   
-#   list(
-#     occDf = occDf,
-#     downCode = downCode
-#   )
-# }
-# 
-# 
-# #Perform a comprehensive download, create a list of important related info
-# download_and_collect_receipts <- function(taxonKey, epithet, basisOfRecord, countryCodes) {
-#   download <- comprehensive_gbif_occ_download(taxonKey, epithet, basisOfRecord, countryCodes)
-#   
-#   list(
-#     epithet = epithet,
-#     taxonKey = taxonKey,
-#     gbiffOcc = download$occDf,
-#     downCode = download$downCode
-#   )
-# }
-# 
-# #Take a bunch of taxons, download them all
-# #Function takes a dataframe of n species and keys, then, for each one, performs a comprehensive download
-# #taxonKeys should be a n by 2 dataframe
-# # taxonKeys[1] = str: epithet
-# # taxonKeys[2] = int: gbiff taxon key
-# map_gbif_download_to_taxon_key_df <- function(taxonKeys, basisOfRecord, countryCodes) {
-#   
-#   taxonKeys %>% 
-#     pmap(\(epithet, taxonKey, downCodes) { #for every epithet and key in the dataframe
-#       download_and_collect_receipts(taxonKey, epithet, basisOfRecord, countryCodes)  #download record, create list, associate with downCode 
-#     })
-#   #returns: list of receipt lists
-# }
-# 
-# #clean up data produced by above map function
-# list_of_lists_to_df <- function(df) {
-#   df %>% 
-#     enframe(name = "row_id") %>% 
-#     unnest_wider(value) %>%
-#     select(-row_id)
-# }
-
-
-#still need 2 more functions:
-
-#export_all_taxons_to_global_env()
-  #take created dataframe of all species, create per sepcies object names, put occ dfs in global env
-
-#import_taxons()
-  #take previously downloaded data, bring it into df
-
-# GBIF user info
-# user='REDACTED'
-# pwd='REDACTED'
-# email='REDACTED'
-
 # Taxon IDs ---------------------------------------------------------------
 # Vaccinium angustifolium	2882868
-# Vaccinium corymbosum	2882849, 4174438 (Vaccinium corymbodendron), 2882837 (Vaccinium caesariense)
+# Vaccinium corymbosum	2882849, 4174438 (Vaccinium corymbodendron), NOTE: Redownloaded 02/06/2026 excluding 2882837 (Vaccinium caesariense)
 # Vaccinium myrtilloides	2882880
 # Vaccinium pallidum	2882895, 8032646 (Vaccinium vacillans)
 # Vaccinium hirsutum	2882824
@@ -159,11 +30,14 @@ library(rgbif) # access GBIF data
 # Vaccinium crassifolium	2882960
 # Vaccinium erythrocarpum	2882844
 # Vaccinium vitis-idaea	2882835
+# Vaccinium shastense 7936270 (California endemic)
+
+
 # SPECIES ADDED LATER (from south of US)
+# Note these species will be exlcluded from further analysis
 # Vaccinium leucanthum 4171440
 # Vaccinium confertum 7328893
 # Vaccinium stenophyllum 4167742
-# Vaccinium shastense 7936270 (California endemic)
 # Vaccinium geminiflorum 2882930
 # Vaccinium cordifolium 4174484
 # Vaccinium consanguineum 7328886
@@ -198,11 +72,13 @@ library(rgbif) # access GBIF data
 # crassifolium - cra
 # erythrocarpum - ery
 # vitis-idaea - vid
+# shastense - sha (added)
+
 # ADDED
+# NOTE: These species are from Mexico and Central America but are dropped in futher analysis
 # leucanthum - leu
 # confertum - con
 # stenophyllum - ste
-# shastense - sha
 # geminiflorum - gem
 # cordifolium - crd
 # consanguineum - cos
@@ -242,7 +118,7 @@ write.csv(df_ang, file = './occ_data/raw/occ_ang.csv') # save the download file 
 file.remove(download_ang) # delete the old ugly-named GBIF file
 
 # V. corymbosum download --------------------------------------------------
-taxonKey <- c(2882849, 4174438, 2882837) # note: includes Vaccinium corymbodendron and Vaccinium caesariense
+taxonKey <- c(2882849, 4174438) # note: includes Vaccinium corymbodendron
 basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
 hasCoordinates <- TRUE # limit to records with coordinates 
 country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico
