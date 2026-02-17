@@ -11,3 +11,6 @@ maps/resolve_eco/resolve_ecoregions.gpkg
 maps/resolve_eco/resolve_ecoregions.gpkg
 sdm_output/sdm_output_dec_10_2025/
 sdm_output/sdm_output_dec_10_2025/
+
+# old SDM snapshot (Dec 2025)
+sdm_output/sdm_output_dec_10_2025/
