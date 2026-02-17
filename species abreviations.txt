@@ -3,7 +3,7 @@ ang – Vaccinium angustifolium
 arb – Vaccinium arboreum
 bor – Vaccinium boreale
 ces – Vaccinium cespitosum
-cor – Vaccinium corymbosum (syn. Vaccinium corymbodendron, Vaccinium caesariense)
+cor – Vaccinium corymbosum (syn. Vaccinium corymbodendron) # Vaccinium caesariense excluded (see below)
 cra – Vaccinium crassifolium
 dar – Vaccinium darrowii
 del – Vaccinium deliciosum
@@ -27,16 +27,16 @@ ten – Vaccinium tenellum
 uli – Vaccinium uliginosum (syn. Vaccinium gaultheriodes)
 vid – Vaccinium vitis-idaea
 
-VACCINIUM CORYMBOSUM SUBSPECIES
-# ash – Vaccinium ashei
-# cae – Vaccinium caesariense
-# cor2 – Vaccinium corymbosum
-# cot – Vaccinium constablaei
-# ell – Vaccinium elliottii
-# for – Vaccinium formosum (syn. Vaccinium australe)
-# fus – Vaccinium fuscatum (syn. Vaccinium arkansanum, Vaccinium atrococcum)
-# sim – Vaccinium simulatum
-# vir – Vaccinium virgatum (syn. Vaccinium amoenum)
+VACCINIUM CORYMBOSUM COMPLEX
+ash – Vaccinium ashei
+cae – Vaccinium caesariense
+cor2 – Vaccinium corymbosum
+cot – Vaccinium constablaei
+ell – Vaccinium elliottii
+for – Vaccinium formosum (syn. Vaccinium australe)
+fus – Vaccinium fuscatum (syn. Vaccinium arkansanum, Vaccinium atrococcum)
+sim – Vaccinium simulatum
+vir – Vaccinium virgatum (syn. Vaccinium amoenum)
 
 MEXICAN/CENTRAL AMERICA
 con – Vaccinium confertum

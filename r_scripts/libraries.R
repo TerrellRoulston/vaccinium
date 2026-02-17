@@ -10,8 +10,8 @@ library(terra) # GIS package, geospatial data managment, spatial analysis, plott
 library(geodata) # Basemaps, and WorldClim Data (Historical and climate change projections) (NOTE: loading WorldClim data from memory via project)
 library(wdpar) # World Database for Protected Areas, PA data for gap analysis
 library(CoordinateCleaner) # Automated cleaning of occurrence data
-library(kcg) # Koeppen-Geiger Climatic Zones used for ecoregion analysis (ecoregions beyond CA-US-MX)
-
+# library(kcg) # Koeppen-Geiger Climatic Zones used for ecoregion analysis (ecoregions beyond CA-US-MX)
+# drop <kcg> as no longer including Central American spp
 
 ### SDM Dependacies
 library(rJava) # Dependacy for Maxent.jar via Java

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array=0-34              # Array size (35 tasks, 0-34, 35 species to run)
+#SBATCH --array=0-26              # Array size (27 tasks, 0-26, 27 species to run)
 #SBATCH --ntasks=1                 # MAKE SURE ITS ONE NODE
 #SBATCH --cpus-per-task=8          # 8 CPUs per task
 #SBATCH --mem-per-cpu=4G           # 4 GB per CPU  = 32 GB per task
@@ -13,10 +13,12 @@ module load StdEnv/2023 r/4.5.0
 export R_LIBS=/project/6074193/mig_lab/bin/RPackages_4_5_0
 
 # List all species that will be arrayed as seperate tasks
-species=("ang" "arb" "bor" "ces" "cor" "cra" "dar" "del" "ery" "hir" "mac" "mem" "mys" "myr" 
-            "mtu" "ova" "ovt" "oxy" "pal" "par" "sco" "sta" "ten" "uli" "vir" "vid", "leu", "con",
-            "ste", "sha", "gem", "crd", "cos", "sel", "kun"
-)
+species=("ang" "arb" "bor" "ces" "cor"
+         "cra" "dar" "del" "ery" "gen"
+         "hir" "mac" "mem" "mys" "myr"
+         "mtu" "ova" "ovt" "oxy" "pal"
+         "par" "sco" "sta" "sha" "ten"
+         "uli" "vid")
 
 # Ensure the task ID is valid
 if [ $SLURM_ARRAY_TASK_ID -ge ${#species[@]} ]; then

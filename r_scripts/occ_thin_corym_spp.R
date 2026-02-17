@@ -70,7 +70,7 @@ occ_thin_list <- lapply(
 # Save thinned occurrences for downstream ---------------------------------
 
 # function for saving thinned occurence spatvectors within the thinned occurrence list
-save_thin_Rdata <- function(x, name, out_dir) {
+save_thin_rds <- function(x, name, out_dir) {
   fname <- file.path(out_dir, paste0("occ_", name, "_thin.rds"))
   saveRDS(x, fname)
   fname
@@ -80,5 +80,5 @@ out_dir <- "C:/Users/terre/Documents/R/vaccinium/occ_data/thin/corym_sub" # spec
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE) # create the dir and/or check it exists
 
 # Using Map rather than lapply bc multiple arguments vary, lapply is better if only the input varies...
-Map(save_thin_Rdata, occ_thin_list, names(occ_thin_list), MoreArgs = list(out_dir = out_dir))
+Map(save_thin_rds, occ_thin_list, names(occ_thin_list), MoreArgs = list(out_dir = out_dir))
 

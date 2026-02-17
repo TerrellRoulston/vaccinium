@@ -6,4 +6,6 @@ wclim_data/
 sdm_output/angPankaj_maxent.Rdata
 sdm_output/ang_maxent.Rdata
 svk_collection_map.R
-sdm_output/
+sdm_output/maps/resolve_eco/resolve_ecoregions.gpkg
+maps/resolve_eco/resolve_ecoregions.gpkg
+maps/resolve_eco/resolve_ecoregions.gpkg
