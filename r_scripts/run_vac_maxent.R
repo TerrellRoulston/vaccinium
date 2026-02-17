@@ -3,7 +3,7 @@
 # Script for HPC anaylsis for all species
 # Terrell Roulston
 # Started Dec 12, 2024
-
+# Updated: Feb 10th, 2026
 
 # Load libs ---------------------------------------------------------------
 library(tidyverse) # Grammar and data management
@@ -35,134 +35,144 @@ cat("Processing species:", species, "\n")
 cat("Load data for each species\n")
 species_list <- list(
   "ang" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ang_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_angThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ang.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ang_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ang_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ang_thin_bgmask.tif"
   ),
   "arb" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/arb_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_arbThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_arb.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_arb_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_arb_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_arb_thin_bgmask.tif"
   ),
   "bor" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/bor_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_borThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_bor.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_bor_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_bor_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_bor_thin_bgmask.tif"
   ),
   "ces" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ces_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_cesThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ces.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ces_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ces_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ces_thin_bgmask.tif"
   ),
   "cor" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/cor_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_corThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_cor.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_cor_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_cor_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_cor_thin_bgmask.tif"
   ),
   "cra" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/cra_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_craThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_cra.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_cra_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_cra_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_cra_thin_bgmask.tif"
   ),
   "dar" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/dar_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_darThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_dar.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_dar_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_dar_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_dar_thin_bgmask.tif"
   ),
   "del" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/del_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_delThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_del.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_del_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_del_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_del_thin_bgmask.tif"
   ),
   "ery" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ery_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_eryThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ery.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ery_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ery_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ery_thin_bgmask.tif"
+  ),
+  "gem" = list(
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_gem_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_gem_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_gem_thin_bgmask.tif"
   ),
   "hir" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/hir_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_hirThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_hir.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_hir_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_hir_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_hir_thin_bgmask.tif"
   ),
   "mac" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/mac_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_macThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_mac.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_mac_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_mac_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_mac_thin_bgmask.tif"
   ),
   "mem" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/mem_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_memThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_mem.rds'
-  ),
-  "mys" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/mys_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_mysThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_mys.rds'
-  ),
-  "myr" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/myr_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_myrThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_myr.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_mem_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_mem_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_mem_thin_bgmask.tif"
   ),
   "mtu" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/mtu_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_mtuThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_mtu.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_mtu_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_mtu_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_mtu_thin_bgmask.tif"
+  ),
+  "myr" = list(
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_myr_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_myr_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_myr_thin_bgmask.tif"
+  ),
+  "mys" = list(
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_mys_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_mys_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_mys_thin_bgmask.tif"
   ),
   "ova" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ova_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_ovaThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ova.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ova_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ova_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ova_thin_bgmask.tif"
   ),
   "ovt" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ovt_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_ovtThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ovt.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ovt_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ovt_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ovt_thin_bgmask.tif"
   ),
   "oxy" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/oxy_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_oxyThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_oxy.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_oxy_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_oxy_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_oxy_thin_bgmask.tif"
   ),
   "pal" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/pal_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_palThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_pal.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_pal_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_pal_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_pal_thin_bgmask.tif"
   ),
   "par" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/par_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_parThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_par.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_par_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_par_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_par_thin_bgmask.tif"
   ),
   "sco" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/sco_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_scoThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_sco.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_sco_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_sco_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_sco_thin_bgmask.tif"
+  ),
+  "sha" = list(
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_sha_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_sha_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_sha_thin_bgmask.tif"
   ),
   "sta" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/sta_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_staThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_sta.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_sta_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_sta_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_sta_thin_bgmask.tif"
   ),
   "ten" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/ten_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_tenThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_ten.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_ten_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_ten_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_ten_thin_bgmask.tif"
   ),
   "uli" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/uli_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_uliThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_uli.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_uli_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_uli_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_uli_thin_bgmask.tif"
   ),
   "vir" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/vir_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_virThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_vir.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_vir_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_vir_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_vir_thin_bgmask.tif"
   ),
   "vid" = list(
-    bg_file = '/project/6074193/mig_lab/vac_sdm/bg_data/vid_bg_vec.rds',
-    occ_file = '/project/6074193/mig_lab/vac_sdm/occ_data/occ_vidThin.rds',
-    env_file = '/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_vid.rds'
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/wclim_occ_vid_thin_bgpts.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/occ_vid_thin.rds",
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_occ_vid_thin_bgmask.tif"
   )
 )
 
@@ -170,13 +180,12 @@ if (!species %in% names(species_list)) {
   stop("Error: Species not found in the species list.")
 }
 
-
 # Load data specific to species -------------------------------------------
 # Load data for the specified species
 sp_data <- species_list[[species]] # Return What species is being ran in the array
 bg_vec <- readRDS(sp_data$bg_file) # Read bg data specific to that sp
 occ <- readRDS(sp_data$occ_file) # Read occ data specific to that sp
-envs <- readRDS(sp_data$env_file) # Read cropped Wclim data for that sp
+envs <- terra::rast(sp_data$env_file) # Read cropped Wclim data for that sp
 occ_coords <- as.data.frame(geom(occ)[,3:4]) # extract lon/lat from occurrence points
 bg_coords <- as.data.frame(geom(bg_vec)[,3:4]) # extract lon/lat from background points
 
@@ -194,13 +203,13 @@ tryCatch({ # tryCatch to capture errors and log them without terminating task
   maxent_model <- ENMevaluate( 
     occs = occ_coords, # geom of occ data
     envs = envs, # environment from background training area
-    n.bg = 10000, 
+    bg = bg_coords,
+    # n.bg = 30000, # number of bg points sampled from env if bg = NULL
     tune.args = list(rm = seq(0.5, 8, 0.5), fc = c("L", "LQ", "H", "LQH", "LQHP")),
-    partition.settings = list(aggregation.factor = c(9, 9), gridSampleN = 10000), # 9,9 agg
-    partitions = 'checkerboard2',
-    parallel = TRUE,
-    numCores = ncores, # utalize all available cores
-    parallelType = "doParallel", # set to doParallel for use on HPC
+    partition.settings = list(aggregation.factor = c(9, 9), gridSampleN = 30000), # 9,9 agg
+    partitions = 'checkerboard', # 4-fold checkboard partition
+    parallel = TRUE, # run in parallel
+    numCores = ncores, # utilize all available cores
     algorithm = 'maxent.jar'
   )
 }, error = function(e) {
@@ -213,7 +222,7 @@ cat("Finnished ")
 output_dir <- file.path("/project/6074193/mig_lab/vac_sdm/sdm_output", species)
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE) # check if dir exists, if not create (avoids errors when outputting)
 if (exists("maxent_model")) {
-  saveRDS(maxent_model, file = file.path(output_dir, paste0(species, "_maxent_model.RDS"))) #Save the MaxEnt model object as an RDS file in the species-specific output directory
+  saveRDS(maxent_model, file = file.path(output_dir, paste0(species, "_maxent_model.rds"))) #Save the MaxEnt model object as an RDS file in the species-specific output directory
   write.csv(subset(maxent_model@results, delta.AICc == 0), 
             file = file.path(output_dir, paste0(species, "_evaluation.csv")))
 }
@@ -224,13 +233,13 @@ mod.best_maxent <- eval.models(maxent_model)[[best_model$tune.args]]
 
 
 # Load climate data for predictions ---------------------------------------
-wclim <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/wclim.rds')
-ssp245_2030 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2030.rds')
-ssp245_2050 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2050.rds')
-ssp245_2070 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2070.rds')
-ssp585_2030 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2030.rds')
-ssp585_2050 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2050.rds')
-ssp585_2070 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2070.rds')
+wclim <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/wclim_CA_US_MX.rds')
+ssp245_2030 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2030_CA_US_MX.rds')
+ssp245_2050 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2050_CA_US_MX.rds')
+ssp245_2070 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp245_2070_CA_US_MX.rds')
+ssp585_2030 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2030_CA_US_MX.rds')
+ssp585_2050 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2050_CA_US_MX.rds')
+ssp585_2070 <- readRDS('/project/6074193/mig_lab/vac_sdm/wclim_data/ssp585_2070_CA_US_MX.rds')
 cat("Loaded bioclimatic predictor rasters")
 
 # Habitat Suitability Predictions -----------------------------------------
@@ -253,13 +262,13 @@ cat("All predictions completed\n")
 
 # Save Predictions --------------------------------------------------------
 cat("Save suitability predictions\n")
-saveRDS(pred_hist, file = file.path(output_dir, paste0(species, "_pred_hist.RDS")))
-saveRDS(pred_ssp245_30, file = file.path(output_dir, paste0(species, "_pred_ssp245_30.RDS")))
-saveRDS(pred_ssp245_50, file = file.path(output_dir, paste0(species, "_pred_ssp245_50.RDS")))
-saveRDS(pred_ssp245_70, file = file.path(output_dir, paste0(species, "_pred_ssp245_70.RDS")))
-saveRDS(pred_ssp585_30, file = file.path(output_dir, paste0(species, "_pred_ssp585_30.RDS")))
-saveRDS(pred_ssp585_50, file = file.path(output_dir, paste0(species, "_pred_ssp585_50.RDS")))
-saveRDS(pred_ssp585_70, file = file.path(output_dir, paste0(species, "_pred_ssp585_70.RDS")))
+saveRDS(pred_hist, file = file.path(output_dir, paste0(species, "_pred_hist.rds")))
+saveRDS(pred_ssp245_30, file = file.path(output_dir, paste0(species, "_pred_ssp245_30.rds")))
+saveRDS(pred_ssp245_50, file = file.path(output_dir, paste0(species, "_pred_ssp245_50.rds")))
+saveRDS(pred_ssp245_70, file = file.path(output_dir, paste0(species, "_pred_ssp245_70.rds")))
+saveRDS(pred_ssp585_30, file = file.path(output_dir, paste0(species, "_pred_ssp585_30.rds")))
+saveRDS(pred_ssp585_50, file = file.path(output_dir, paste0(species, "_pred_ssp585_50.rds")))
+saveRDS(pred_ssp585_70, file = file.path(output_dir, paste0(species, "_pred_ssp585_70.rds")))
 
 # Evaluate model predictions ----------------------------------------------
 cat("Boyce Index for species:", species, "\n")
