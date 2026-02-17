@@ -18,3 +18,4 @@ sdm_stack.R # Script for stacking SDMs to show expected richness for both main v
 threshold_calc.R # Script for calculating suitability quantiles for thresholding SDM results
 vacc_bg_cec # Script for extracting ecoregion for each spp, generating background points and cropping worldclim data to ecoregion extent
 vacc_plot.R # DRAFT -- script for plotting SDM results
+wclim_prep_CA_US_MX.R # cropping worldclim data to Canada US and Mexico
