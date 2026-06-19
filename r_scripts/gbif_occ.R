@@ -5,7 +5,7 @@ library(rgbif) # access GBIF data
 
 # Taxon IDs ---------------------------------------------------------------
 # Vaccinium angustifolium	2882868
-# Vaccinium corymbosum	2882849, 4174438 (Vaccinium corymbodendron), NOTE: Redownloaded 02/06/2026 excluding 2882837 (Vaccinium caesariense)
+# Vaccinium corymbosum	2882849, NOTE: Redownloaded 02/06/2026 excluding 2882837 (Vaccinium caesariense)
 # Vaccinium myrtilloides	2882880
 # Vaccinium pallidum	2882895, 8032646 (Vaccinium vacillans)
 # Vaccinium hirsutum	2882824
@@ -118,7 +118,7 @@ write.csv(df_ang, file = './occ_data/raw/occ_ang.csv') # save the download file 
 file.remove(download_ang) # delete the old ugly-named GBIF file
 
 # V. corymbosum download --------------------------------------------------
-taxonKey <- c(2882849, 4174438) # note: includes Vaccinium corymbodendron
+taxonKey <- c(2882849) 
 basisOfRecord <- c('PRESERVED_SPECIMEN', 'HUMAN_OBSERVATION', 'OCCURRENCE', 'MATERIAL_SAMPLE', 'LIVING_SPECIMEN') 
 hasCoordinates <- TRUE # limit to records with coordinates 
 country_codes <- c("CA", "US", "MX") # limit to Canada, USA and Mexico

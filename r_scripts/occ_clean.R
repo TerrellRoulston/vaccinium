@@ -185,6 +185,7 @@ occ_cor_clean <- occ_cor %>%
   filter(hasGeospatialIssues == FALSE) %>% # remove records with geospatial issues
   filter(!(stateProvince  %in% c('New Mexico', 'Nevada', 'Montana'))) %>%  # filter out reccords from strange provinces
   filter(!(decimalLatitude > 52)) %>% 
+  filter((decimalLongitude > -100)) %>% # filter out west coast occ
   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
   filter(decimalLongitude != 0) %>% 
@@ -344,6 +345,7 @@ occ_mac_clean <- occ_mac %>%
   select(species, countryCode, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters, year, basisOfRecord, gbifID) %>% #grab necessary columns 
   filter(!is.na(decimalLongitude)) %>% # should have coords but you never know
   filter(decimalLongitude != 0) %>% 
+  filter((decimalLongitude > -100)) %>% # filter out west coast occ
   filter(coordinateUncertaintyInMeters < 30000 | is.na(coordinateUncertaintyInMeters)) %>%
   cc_cen(buffer = 2000) %>%
   cc_inst(buffer = 200) %>%

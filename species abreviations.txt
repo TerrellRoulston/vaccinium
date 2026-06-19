@@ -3,7 +3,7 @@ ang – Vaccinium angustifolium
 arb – Vaccinium arboreum
 bor – Vaccinium boreale
 ces – Vaccinium cespitosum
-cor – Vaccinium corymbosum (syn. Vaccinium corymbodendron) # Vaccinium caesariense excluded (see below)
+cor – Vaccinium corymbosum # Vaccinium caesariense excluded (see below)
 cra – Vaccinium crassifolium
 dar – Vaccinium darrowii
 del – Vaccinium deliciosum

@@ -324,5 +324,58 @@ subset(bg_summary1, n_bg < 30000)
 subset(bg_summary2, n_bg < 30000)
 
 
+###### MANUAL ECOREGION OVERRIDE ######
+# Add two ecoregions manually for Vaccinium caesariense (occ_cae_thin)
+set.seed(1337)
+target_nm <- "occ_cae_thin"
 
+# The prediction for cae includes a proximal high suitability patch over the appilachain mountains that is very spurious and is messing with the future predictions. Thus I am expanding the background to train the model on these 'absences'
+extra_codes <- c("8.4", "8.2")
 
+# Update code list (corym_sub)
+stopifnot(target_nm %in% names(eco_codes_list2))
+codes_old <- eco_codes_list2[[target_nm]]
+codes_new <- unique(c(codes_old, extra_codes))
+codes_new <- codes_new[!is.na(codes_new) & nzchar(codes_new) & codes_new != "0.0"]
+eco_codes_list2[[target_nm]] <- codes_new
+
+# Update ecoregion polygon (corym_sub)
+ecoNA_codes <- as.character(ecoNA[["NA_L2CODE"]][[1]])
+eco_vect_list2[[target_nm]] <- ecoNA[ecoNA_codes %in% codes_new, ]
+
+# Overwrite saved ecoregion code + vector for cae
+saveRDS(
+  eco_codes_list2[[target_nm]],
+  file.path("C:/Users/terre/Documents/R/vaccinium/bg_data/eco_code/corym_sub",
+            paste0("eco_", target_nm, "_code_v2.rds"))
+)
+
+terra::writeVector(
+  eco_vect_list2[[target_nm]],
+  file.path("C:/Users/terre/Documents/R/vaccinium/bg_data/eco_shp/corym_sub",
+            paste0("eco_", target_nm, "_vect_v2.gpkg")),
+  overwrite = TRUE
+)
+
+# Rebuild masked WorldClim for cae + overwrite tif
+wclim_mask_list2[[target_nm]] <- mask_wclim_to_vect(wclim_CA_US_MX, eco_vect_list2[[target_nm]])
+
+terra::writeRaster(
+  wclim_mask_list2[[target_nm]],
+  file.path("C:/Users/terre/Documents/R/vaccinium/wclim_data/wclim_spp_mask/corym_sub",
+            paste0("wclim_", target_nm, "_bgmask_v2.tif")),
+  overwrite = TRUE
+)
+
+# Re-sample bg points for cae + overwrite rds
+wclim_bgpts_list2[[target_nm]] <- sample_wclim_bg(wclim_mask_list2[[target_nm]], n = 30000)
+
+saveRDS(
+  wclim_bgpts_list2[[target_nm]],
+  file.path("C:/Users/terre/Documents/R/vaccinium/bg_data/wclim_bgpts/corym_sub",
+            paste0("wclim_", target_nm, "_bgpts_v2.rds"))
+)
+
+message("Manual override complete for ", target_nm,
+        "\nAdded codes: ", paste(extra_codes, collapse = ", "),
+        "\nTotal cae codes now: ", length(codes_new))

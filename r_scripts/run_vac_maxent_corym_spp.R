@@ -44,6 +44,11 @@ species_list_corym_sub <- list(
     occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/corym_sub/occ_cae_thin.rds",
     env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/corym_sub/wclim_occ_cae_thin_bgmask.tif"
   ),
+  "cae2" = list( # for rerunning with expanded ecoregion background
+    bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/corym_sub/wclim_occ_cae_thin_bgpts_v2.rds",
+    occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/corym_sub/occ_cae_thin.rds", # note thinned occ stay same
+    env_file = "/project/6074193/mig_lab/vac_sdm/wclim_data/corym_sub/wclim_occ_cae_thin_bgmask_v2.tif"
+  ),
   "cor2" = list(
     bg_file  = "/project/6074193/mig_lab/vac_sdm/bg_data/corym_sub/wclim_occ_cor2_thin_bgpts.rds",
     occ_file = "/project/6074193/mig_lab/vac_sdm/occ_data/corym_sub/occ_cor2_thin.rds",
