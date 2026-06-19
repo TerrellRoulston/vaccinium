@@ -17,3 +17,6 @@ sdm_output/sdm_output_dec_10_2025/
 
 # SDM outputs (generated)
 sdm_output/
+
+# Connectivity input
+connectivity_inputs/resistance_classes.tif
