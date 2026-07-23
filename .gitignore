@@ -22,3 +22,36 @@ sdm_output/
 # Connectivity inputs
 connectivity_inputs/resistance_classes.tif
 connectivity_inputs/landcover_resistance_30m.tif
+
+# Cluster job logs
+*.out
+*.err
+
+# Generated binary/cache files
+*.bin
+*.cache/
+
+# Syncrosim data
+connectivity_syncrosim/*.ssim.temp/
+connectivity_syncrosim/*.ssim.data/Scenario-*
+
+# Resistance and source layer connectivity inputs
+# Keep land_resistance_coarse.tif, protected_areas_grid.tif, and wclim_template.tif to generate all the inputs needed
+connectivity_inputs/resistance_classes.tif
+connectivity_inputs/landcover_resistance_30m.tif
+connectivity_inputs/ang
+connectivity_inputs/ash
+connectivity_inputs/bor
+connectivity_inputs/cor
+connectivity_inputs/cot
+connectivity_inputs/dar
+connectivity_inputs/ell
+connectivity_inputs/fus
+connectivity_inputs/hir
+connectivity_inputs/myr
+connectivity_inputs/mys
+connectivity_inputs/pal
+connectivity_inputs/sensitivity_analysis
+connectivity_inputs/sim
+connectivity_inputs/ten
+connectivity_inputs/vir
