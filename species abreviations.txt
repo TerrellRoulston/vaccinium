@@ -29,12 +29,10 @@ vid – Vaccinium vitis-idaea
 
 VACCINIUM CORYMBOSUM COMPLEX
 ash – Vaccinium ashei
-cae – Vaccinium caesariense
-cor2 – Vaccinium corymbosum
+cor – Vaccinium corymbosum (syn. Vaccinium austral, Vaccinium formosum)
 cot – Vaccinium constablaei
 ell – Vaccinium elliottii
-for – Vaccinium formosum (syn. Vaccinium australe)
-fus – Vaccinium fuscatum (syn. Vaccinium arkansanum, Vaccinium atrococcum)
+fus – Vaccinium fuscatum (syn. Vaccinium arkansanum, Vaccinium atrococcum, Vaccinium caesariense)
 sim – Vaccinium simulatum
 vir – Vaccinium virgatum (syn. Vaccinium amoenum)
 
