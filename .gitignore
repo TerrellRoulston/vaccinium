@@ -14,6 +14,9 @@ sdm_output/sdm_output_dec_10_2025/
 maps/wdpa_prot_area/
 maps/ca_census_shp/
 
+# gbif login
+r_scripts/gbif_login.R
+
 # old SDM snapshot (Dec 2025)
 sdm_output/sdm_output_dec_10_2025/
 
